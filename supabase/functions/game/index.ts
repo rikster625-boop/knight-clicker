@@ -45,9 +45,10 @@ async function verifyTelegram(initData: string, botToken: string) {
     .map(([key, value]) => `${key}=${value}`)
     .join("\n");
 
+  // Correct Telegram WebApp secret key calculation
   const secretKey = await hmac(
-    new TextEncoder().encode("WebAppData").buffer,
-    botToken,
+    new TextEncoder().encode(botToken).buffer,
+    "WebAppData",
   );
 
   const calculatedHash = toHex(
@@ -59,11 +60,14 @@ async function verifyTelegram(initData: string, botToken: string) {
   }
 
   let difference = 0;
+
   for (let i = 0; i < calculatedHash.length; i++) {
     difference |= calculatedHash.charCodeAt(i) ^ receivedHash.charCodeAt(i);
   }
 
-  if (difference !== 0) throw new Error("Invalid Telegram signature");
+  if (difference !== 0) {
+    throw new Error("Invalid Telegram signature");
+  }
 
   const authDate = Number(params.get("auth_date"));
   const now = Math.floor(Date.now() / 1000);
@@ -73,6 +77,7 @@ async function verifyTelegram(initData: string, botToken: string) {
   }
 
   const userRaw = params.get("user");
+
   if (!userRaw) throw new Error("Missing Telegram user");
 
   const user = JSON.parse(userRaw);
@@ -97,6 +102,8 @@ Deno.serve(async (req) => {
   }
 
   try {
+    console.log("Game request received");
+
     const botToken = Deno.env.get("TELEGRAM_BOT_TOKEN");
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
@@ -131,15 +138,25 @@ Deno.serve(async (req) => {
         { onConflict: "telegram_id" },
       );
 
-    if (saveError) throw saveError;
+    if (saveError) {
+      console.error("Player save error:", saveError);
+      throw new Error("Could not save player");
+    }
 
     const { data: player, error: loadError } = await supabase
       .from("players")
-      .select("telegram_id, username, first_name, coins, level, wave, total_damage, game_state")
+      .select(
+        "telegram_id, username, first_name, coins, level, wave, total_damage, game_state",
+      )
       .eq("telegram_id", String(user.id))
       .single();
 
-    if (loadError) throw loadError;
+    if (loadError) {
+      console.error("Player load error:", loadError);
+      throw new Error("Could not load player");
+    }
+
+    console.log("Player connected:", user.id);
 
     return Response.json(
       { success: true, player },
@@ -149,7 +166,10 @@ Deno.serve(async (req) => {
     console.error("Game function error:", error);
 
     return Response.json(
-      { error: "Authentication or server error" },
+      {
+        success: false,
+        error: error instanceof Error ? error.message : "Unknown server error",
+      },
       { status: 401, headers: corsHeaders },
     );
   }
