@@ -9,7 +9,7 @@ html,body{margin:0;height:100%;overflow:hidden}
 body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-webkit-user-select:none;touch-action:manipulation;background:#0b1030}
 #sky,#stars{position:fixed;inset:0}
 #stars{opacity:0;background-image:radial-gradient(2px 2px at 20px 30px,#fff,transparent),radial-gradient(2px 2px at 90px 80px,#fff,transparent),radial-gradient(1.5px 1.5px at 160px 40px,#fff,transparent),radial-gradient(1.5px 1.5px at 240px 120px,#fff,transparent),radial-gradient(2px 2px at 300px 60px,#fff,transparent);background-size:340px 170px}
-.orb{position:fixed;width:56px;height:56px;border-radius:50%;margin:-28px 0 0 -28px;transition:opacity 1s,top 1s,left 1s}
+.orb{position:fixed;left:-100px;top:-100px;width:56px;height:56px;border-radius:50%;margin:-28px 0 0 -28px;opacity:0;transition:opacity 1s,top 1s,left 1s}
 #sun{background:#ffe27a;box-shadow:0 0 50px 18px #ffd34d99}
 #moon{background:#fff6d5;box-shadow:0 0 40px #fff6d5aa}
 #clouds{position:fixed;inset:0;opacity:0;pointer-events:none}
@@ -18,7 +18,7 @@ body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-
 .cl:before{width:34px;height:34px;top:-15px;left:12px}
 .cl:after{width:26px;height:26px;top:-10px;left:42px}
 @keyframes cd{from{transform:translateX(-160px)}to{transform:translateX(calc(100vw + 160px))}}
-#castle{position:fixed;left:0;bottom:15vh;width:100%;height:110px;fill:var(--c)}
+#castle{position:fixed;left:0;bottom:15vh;width:100%;height:110px;fill:var(--c,#2a2050)}
 #ground{position:fixed;left:0;bottom:0;width:100%;height:24vh}
 #hd{position:fixed;top:0;left:0;right:0;text-align:center;padding-top:calc(env(safe-area-inset-top) + 14px);z-index:5;pointer-events:none}
 #coins{font-size:40px;font-weight:800;text-shadow:0 3px 0 #0008}
@@ -46,13 +46,13 @@ body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-
 #nav button.on{color:#ffd84d}
 .f{position:fixed;pointer-events:none;font-weight:800;font-size:28px;color:#ffd84d;text-shadow:0 2px 0 #000a;animation:fl .8s ease-out forwards;z-index:4}
 @keyframes fl{to{transform:translateY(-100px);opacity:0}}
-#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 130px);transform:translateX(-50%);background:#000c;padding:10px 18px;border-radius:14px;font-weight:700;opacity:0;transition:opacity .3s;z-index:9;pointer-events:none;white-space:nowrap}
+#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 130px);transform:translateX(-50%);background:#000c;padding:10px 18px;border-radius:14px;font-weight:700;opacity:0;transition:opacity .3s;z-index:9;pointer-events:none;max-width:90%;text-align:center}
 </style></head><body>
 <div id="sky"></div><div id="stars"></div>
 <div class="orb" id="sun"></div><div class="orb" id="moon"></div>
 <div id="clouds"><div class="cl" style="top:20%;width:90px;animation-duration:70s"></div><div class="cl" style="top:30%;width:70px;animation-duration:95s;animation-delay:-40s"></div><div class="cl" style="top:14%;width:110px;animation-duration:120s;animation-delay:-80s"></div></div>
 <svg id="castle" viewBox="0 0 400 120" preserveAspectRatio="xMidYMax slice"><path d="M0 120V80h30V60h10V50h10v10h10v20h30V70h10V40h10V28h8v12h10v30h20V90h40V75h12V65h8v10h12v15h30V60h12V45h10v15h10v30h30V80h40v40z"/></svg>
-<svg id="ground" viewBox="0 0 400 100" preserveAspectRatio="none"><path style="fill:var(--g2)" d="M0 40Q100 5 200 35T400 25V100H0z"/><path style="fill:var(--g1)" d="M0 60Q120 30 240 55T400 50V100H0z"/></svg>
+<svg id="ground" viewBox="0 0 400 100" preserveAspectRatio="none"><path style="fill:var(--g2,#2a8a3c)" d="M0 40Q100 5 200 35T400 25V100H0z"/><path style="fill:var(--g1,#38a84d)" d="M0 60Q120 30 240 55T400 50V100H0z"/></svg>
 <div id="hd"><div id="coins"></div><div id="rank"></div><div id="bar"><i id="barf"></i></div></div>
 <div class="view on" id="v0"><div id="stage"></div><div class="bt"><button id="up"></button></div></div>
 <div class="pn" id="v1"></div><div class="pn" id="v2"></div><div class="pn" id="v3"></div>
@@ -60,19 +60,22 @@ body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-
 <div id="toast"></div>
 <script>
 const tg=window.Telegram&&Telegram.WebApp;
-const CHANNEL='ClickerHeroGameNews';            // ← тут юзернейм твого каналу без @, наприклад 'my_channel'
+const CHANNEL='ClickerHeroGameNews';
 const BOT='ClickerHeroGameBot';
 const PRIZE='Переможець дня отримує бонус від адміна. Умови оголошуємо в каналі.';
 const $=i=>document.getElementById(i);
+function toast(t){const e=$('toast');e.textContent=t;e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,1800)}
+window.onerror=function(m,u,l){try{toast('Помилка: '+m+' (рядок '+l+')')}catch(e){}};
+
 const def={c:0,l:1,taps:0,tt:0,td:'',best:0,last:0,daily:0,done:{},opened:{},ref:0};
 let s=Object.assign({},def);
 try{s=Object.assign({},def,JSON.parse(localStorage.getItem('kc2')||localStorage.getItem('kc')||'{}'))}catch(e){}
+if(!s.done)s.done={};if(!s.opened)s.opened={};
 const save=()=>{try{localStorage.setItem('kc2',JSON.stringify(s))}catch(e){}};
 const RANKS=['Малий зброєносець','Юний воїн','Лицар','Паладин','Легенда'];
 const per=()=>s.l, cost=()=>Math.floor(10*Math.pow(1.6,s.l-1)), tier=()=>Math.min(4,Math.floor((s.l-1)/4));
 const fmt=n=>n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e4?(n/1e3).toFixed(1)+'K':Math.floor(n);
 const hap=(k,v)=>{try{k=='i'?tg.HapticFeedback.impactOccurred(v||'light'):tg.HapticFeedback.notificationOccurred(v)}catch(e){}};
-function toast(t){const e=$('toast');e.textContent=t;e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,1800)}
 
 /* ---------- НЕБО ---------- */
 const K=[[0,'#050818','#141a48'],[5,'#14183f','#3b2a6a'],[6.5,'#ff8a5c','#ffd3a1'],[8,'#4da6ff','#bfe6ff'],[12,'#2f8cff','#a8dcff'],[16,'#4aa0ff','#cfe9ff'],[18,'#ff7a4d','#ffc58a'],[19.5,'#3a2a6a','#c25a7a'],[21,'#0f1236','#2a1f5c'],[24,'#050818','#141a48']];
@@ -104,6 +107,8 @@ function hero(){
  const plume=[null,null,'#ef4444','#f59e0b','#a855f7'][t];
  const bl=[42,62,82,102,122][t],skin='#f2c6a0';
  const body=t==0?'#3b82f6':'url(#ga)';
+ const mouthY=t>=3?20:23;
+ const swordStroke=t==4?'stroke="#a855f7" stroke-width="2"':'';
  let o=`<svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ga" x1="0" x2="1"><stop offset="0" stop-color="${A[0]}"/><stop offset="1" stop-color="${A[1]}"/></linearGradient></defs>`;
  o+=`<g transform="translate(100 270) scale(${sc}) translate(-100 -270)">`;
  if(t==4)o+=`<circle cx="100" cy="150" r="112" fill="#a855f7" opacity=".22"/>`;
@@ -118,17 +123,21 @@ function hero(){
  if(t>=1){const sx=cx-w-26;o+=`<path d="M${sx-19} 150h38v26q0 22-19 32q-19-10-19-32z" fill="#2c3e8f" stroke="#ffd84d" stroke-width="3"/><path d="M${sx} 158v40M${sx-12} 170h24" stroke="#ffd84d" stroke-width="3"/>`}
  o+=`<rect x="${cx+w-4}" y="124" width="14" height="58" rx="7" fill="${body}"/>`;
  const bc=['#9a6b3a','#cfd6de','#e8eef6','#fff2a8','#e9d5ff'][t];
- o+=`<rect x="${cx+w-1}" y="${184-bl}" width="8" height="${bl}" rx="3" fill="${bc}" ${t==4?'stroke="#a855f7" stroke-width="2"':''}/><rect x="${cx+w-9}" y="182" width="26" height="7" rx="3" fill="${t==0?'#6b4a2a':'#ffd84d'}"/><circle cx="${cx+w+3}" cy="187" r="7" fill="${skin}"/>`;
+ o+=`<rect x="${cx+w-1}" y="${184-bl}" width="8" height="${bl}" rx="3" fill="${bc}" ${swordStroke}/><rect x="${cx+w-9}" y="182" width="26" height="7" rx="3" fill="${t==0?'#6b4a2a':'#ffd84d'}"/><circle cx="${cx+w+3}" cy="187" r="7" fill="${skin}"/>`;
  o+=`<rect x="${cx-8}" y="108" width="16" height="18" fill="${skin}"/><circle cx="${cx}" cy="${cy}" r="${hr}" fill="${skin}"/><circle cx="${cx-hr}" cy="${cy+4}" r="5" fill="${skin}"/><circle cx="${cx+hr}" cy="${cy+4}" r="5" fill="${skin}"/>`;
- if(t<2){o+=`<path d="M${cx-hr-1} ${cy-1}Q${cx-hr-3} ${cy-hr-10} ${cx} ${cy-hr-9}Q${cx+hr+3} ${cy-hr-10} ${cx+hr+1} ${cy-1}Q${cx+hr-6} ${cy-hr+6} ${cx} ${cy-hr+9}Q${cx-hr+6} ${cy-hr+6} ${cx-hr-1} ${cy-1}Z" fill="${hair}"/>`;
-  if(t==0)o+=`<rect x="${cx-hr}" y="${cy-14}" width="${hr*2}" height="7" rx="3" fill="#dc2626"/>`}
+ if(t<2){
+  o+=`<path d="M${cx-hr-1} ${cy-1}Q${cx-hr-3} ${cy-hr-10} ${cx} ${cy-hr-9}Q${cx+hr+3} ${cy-hr-10} ${cx+hr+1} ${cy-1}Q${cx+hr-6} ${cy-hr+6} ${cx} ${cy-hr+9}Q${cx-hr+6} ${cy-hr+6} ${cx-hr-1} ${cy-1}Z" fill="${hair}"/>`;
+  if(t==0)o+=`<rect x="${cx-hr}" y="${cy-14}" width="${hr*2}" height="7" rx="3" fill="#dc2626"/>`;
+ }
  if(t>=3)o+=`<path d="M${cx-16} ${cy+12}Q${cx} ${cy+36} ${cx+16} ${cy+12}Q${cx} ${cy+22} ${cx-16} ${cy+12}Z" fill="${hair}" opacity="${t==3?.4:.95}"/>`;
  const er=t==0?4.6:3.6;
  o+=`<circle cx="${cx-10}" cy="${cy+4}" r="${er}" fill="#1f2937"/><circle cx="${cx+10}" cy="${cy+4}" r="${er}" fill="#1f2937"/><circle cx="${cx-9}" cy="${cy+3}" r="1.3" fill="#fff"/><circle cx="${cx+11}" cy="${cy+3}" r="1.3" fill="#fff"/>`;
  if(t==0)o+=`<circle cx="${cx-17}" cy="${cy+13}" r="5" fill="#f87171" opacity=".5"/><circle cx="${cx+17}" cy="${cy+13}" r="5" fill="#f87171" opacity=".5"/>`;
  if(t>=2)o+=`<path d="M${cx-16} ${cy-3}l11 2M${cx+16} ${cy-3}l-11 2" stroke="${t==4?'#cbd5e1':'#3a2210'}" stroke-width="2.5" stroke-linecap="round"/>`;
- o+=`<path d="M${cx-7} ${cy+16}Q${cx} ${cy+${t>=3?20:23}} ${cx+7} ${cy+16}" stroke="#7a3b2e" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;
- if(t>=2){o+=`<path d="M${cx-hr-3} ${cy+2}A${hr+3} ${hr+3} 0 0 1 ${cx+hr+3} ${cy+2}Z" fill="url(#ga)" stroke="#0006"/><rect x="${cx-3}" y="${cy-12}" width="6" height="24" rx="2" fill="url(#ga)"/><path d="M${cx} ${cy-hr-2}q-6-26 22-30q-4 16-4 32z" fill="${plume}"/>`}
+ o+=`<path d="M${cx-7} ${cy+16}Q${cx} ${cy+mouthY} ${cx+7} ${cy+16}" stroke="#7a3b2e" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;
+ if(t>=2){
+  o+=`<path d="M${cx-hr-3} ${cy+2}A${hr+3} ${hr+3} 0 0 1 ${cx+hr+3} ${cy+2}Z" fill="url(#ga)" stroke="#0006"/><rect x="${cx-3}" y="${cy-12}" width="6" height="24" rx="2" fill="url(#ga)"/><path d="M${cx} ${cy-hr-2}q-6-26 22-30q-4 16-4 32z" fill="${plume}"/>`;
+ }
  return o+'</g></svg>';
 }
 
@@ -164,18 +173,28 @@ const TASKS=[
  {id:'l10',t:'👑 Досягти 10 рівня',r:5000,g:10,v:()=>s.l}
 ];
 function renderTasks(){
- $('v1').innerHTML=TASKS.map(x=>{
+ let html='';
+ TASKS.forEach(x=>{
   let btn='',bar='';
-  if(x.k=='dl'){const left=864e5-(Date.now()-s.daily);btn=left<=0?`<button class="b" data-a="claim" data-id="${x.id}">Забрати</button>`:`<button class="b" disabled>${Math.floor(left/36e5)}г ${Math.floor(left%36e5/6e4)}хв</button>`}
-  else if(x.k=='ch'){btn=s.done.ch?'✅':(s.opened.ch?`<button class="b" data-a="claim" data-id="ch">Забрати</button>`:`<button class="b" data-a="open">Відкрити</button>`)}
-  else{const v=Math.min(x.v(),x.g);bar=`<div class="pb"><i style="width:${v/x.g*100}%"></i></div>`;btn=s.done[x.id]?'✅':(x.v()>=x.g?`<button class="b" data-a="claim" data-id="${x.id}">Забрати</button>`:`<button class="b" disabled>${v}/${x.g}</button>`)}
-  return `<div class="cd"><div class="row"><div><b>${x.t}</b><p>+${x.r} 🪙</p></div>${btn}</div>${bar}</div>`}).join('')
-  +'<p class="sm">Підписку на канал поки що перевіряємо «по совісті», автоматична перевірка з’явиться з сервером.</p>';
+  if(x.k=='dl'){
+   const left=864e5-(Date.now()-s.daily);
+   btn=left<=0?'<button class="b" data-a="claim" data-id="'+x.id+'">Забрати</button>':'<button class="b" disabled>'+Math.floor(left/36e5)+'г '+Math.floor(left%36e5/6e4)+'хв</button>';
+  }else if(x.k=='ch'){
+   btn=s.done.ch?'✅':(s.opened.ch?'<button class="b" data-a="claim" data-id="ch">Забрати</button>':'<button class="b" data-a="open">Відкрити</button>');
+  }else{
+   const v=Math.min(x.v(),x.g);
+   bar='<div class="pb"><i style="width:'+(v/x.g*100)+'%"></i></div>';
+   btn=s.done[x.id]?'✅':(x.v()>=x.g?'<button class="b" data-a="claim" data-id="'+x.id+'">Забрати</button>':'<button class="b" disabled>'+v+'/'+x.g+'</button>');
+  }
+  html+='<div class="cd"><div class="row"><div><b>'+x.t+'</b><p>+'+x.r+' 🪙</p></div>'+btn+'</div>'+bar+'</div>';
+ });
+ html+='<p class="sm">Підписку на канал поки що перевіряємо «по совісті», автоматична перевірка з’явиться з сервером.</p>';
+ $('v1').innerHTML=html;
 }
 $('v1').onclick=e=>{const b=e.target.closest('button[data-a]');if(!b)return;
  if(b.dataset.a=='open'){
-  if(!CHANNEL){toast('Канал ще не вказано в коді');return}
-  const u='https://t.me/'+CHANNEL;try{tg.openTelegramLink(u)}catch(_){window.open(u)}
+  const u='https://t.me/'+CHANNEL;
+  try{tg.openTelegramLink(u)}catch(_){window.open(u)}
   s.opened.ch=1;save();renderTasks();return}
  const x=TASKS.find(z=>z.id==b.dataset.id);
  if(x.k=='dl')s.daily=Date.now();else s.done[x.id]=1;
@@ -186,26 +205,29 @@ $('v1').onclick=e=>{const b=e.target.closest('button[data-a]');if(!b)return;
 function renderTour(){
  checkDay();
  const e=new Date();e.setHours(24,0,0,0);const ms=e-Date.now();
- $('v2').innerHTML=`<div class="cd"><h3>🏆 Турнір дня</h3><p>Завершиться через <b>${Math.floor(ms/36e5)}г ${Math.floor(ms%36e5/6e4)}хв</b></p>
- <p>Твій результат: <b>${s.tt}</b> тапів</p><p>Твій рекорд: <b>${Math.max(s.best,s.tt)}</b></p><p>Минулий турнір: <b>${s.last}</b></p></div>
- <div class="cd"><h3>🎁 Приз</h3><p>${PRIZE}</p></div>
- <div class="cd"><h3>📊 Рейтинг</h3><div class="row"><span>🥇 Ти</span><b>${s.tt}</b></div><p class="sm">Спільна таблиця лідерів з’явиться, коли підключимо базу даних.</p></div>`;
+ $('v2').innerHTML='<div class="cd"><h3>🏆 Турнір дня</h3><p>Завершиться через <b>'+Math.floor(ms/36e5)+'г '+Math.floor(ms%36e5/6e4)+'хв</b></p>'
+ +'<p>Твій результат: <b>'+s.tt+'</b> тапів</p><p>Твій рекорд: <b>'+Math.max(s.best,s.tt)+'</b></p><p>Минулий турнір: <b>'+s.last+'</b></p></div>'
+ +'<div class="cd"><h3>🎁 Приз</h3><p>'+PRIZE+'</p></div>'
+ +'<div class="cd"><h3>📊 Рейтинг</h3><div class="row"><span>🥇 Ти</span><b>'+s.tt+'</b></div><p class="sm">Спільна таблиця лідерів з’явиться, коли підключимо базу даних.</p></div>';
 }
 
 /* ---------- ДРУЗІ ---------- */
 const uid=()=>{try{return tg.initDataUnsafe.user.id}catch(e){return 'guest'}};
 const link=()=>'https://t.me/'+BOT+'?start=ref_'+uid();
-function cp(t){const f=()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}a.remove();toast('Скопійовано ✅')};
- if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(()=>toast('Скопійовано ✅')).catch(f);else f()}
+function cp(t){
+ const f=()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}a.remove();toast('Скопійовано ✅')};
+ if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(()=>toast('Скопійовано ✅')).catch(f);else f();
+}
 function renderFr(){
- $('v3').innerHTML=`<div class="cd"><h3>👥 Запроси друзів</h3><p>За кожного друга: <b>+1000 🪙</b> тобі і <b>+500 🪙</b> другу.</p>
- <div class="lk">${link()}</div><div class="row"><button class="b" data-a="cp">Копіювати</button><button class="b" data-a="sh">Поділитись</button></div></div>
- <div class="cd"><div class="row"><b>Запрошено друзів</b><b>${s.ref}</b></div></div>
- <p class="sm">Посилання вже працює, але нарахування бонусів за друзів увімкнеться після підключення бази даних.</p>`;
+ $('v3').innerHTML='<div class="cd"><h3>👥 Запроси друзів</h3><p>За кожного друга: <b>+1000 🪙</b> тобі і <b>+500 🪙</b> другу.</p>'
+ +'<div class="lk">'+link()+'</div><div class="row"><button class="b" data-a="cp">Копіювати</button><button class="b" data-a="sh">Поділитись</button></div></div>'
+ +'<div class="cd"><div class="row"><b>Запрошено друзів</b><b>'+s.ref+'</b></div></div>'
+ +'<p class="sm">Посилання вже працює, але нарахування бонусів за друзів увімкнеться після підключення бази даних.</p>';
 }
 $('v3').onclick=e=>{const b=e.target.closest('button[data-a]');if(!b)return;
  if(b.dataset.a=='cp')cp(link());
- else{const u='https://t.me/share/url?url='+encodeURIComponent(link())+'&text='+encodeURIComponent('Грай у Knight Clicker і прокачуй лицаря! ⚔️');try{tg.openTelegramLink(u)}catch(_){window.open(u)}}};
+ else{const u='https://t.me/share/url?url='+encodeURIComponent(link())+'&text='+encodeURIComponent('Грай у Knight Clicker і прокачуй лицаря! ⚔️');try{tg.openTelegramLink(u)}catch(_){window.open(u)}}
+};
 
 /* ---------- ВКЛАДКИ ---------- */
 let cur=0;
