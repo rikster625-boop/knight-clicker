@@ -1,28 +1,75 @@
 <!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <title>Knight Clicker</title>
 <style>
-body{margin:0;height:100vh;background:linear-gradient(#1b1f4b,#3a2a5e);color:#fff;font-family:sans-serif;text-align:center;user-select:none;-webkit-user-select:none}
-#coins{font-size:40px;padding-top:30px}
-#info{opacity:.8;margin:6px}
-#k{margin-top:30px;transition:transform .08s;line-height:1.2}
-button{margin-top:30px;padding:16px 28px;font-size:18px;border:0;border-radius:14px;background:#f5b800;color:#222;font-weight:bold}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;height:100vh;overflow:hidden;font-family:-apple-system,Segoe UI,sans-serif;color:#fff;background:linear-gradient(#0b1030 0%,#2a1b57 55%,#5b2a6e 100%);user-select:none;-webkit-user-select:none;touch-action:manipulation}
+#stars{position:fixed;inset:0;opacity:.7;background-image:radial-gradient(2px 2px at 20px 30px,#fff,transparent),radial-gradient(2px 2px at 90px 80px,#fff,transparent),radial-gradient(1.5px 1.5px at 160px 40px,#fff,transparent),radial-gradient(1.5px 1.5px at 240px 120px,#fff,transparent);background-size:280px 160px}
+#moon{position:fixed;top:90px;right:26px;width:54px;height:54px;border-radius:50%;background:#fff6d5;box-shadow:0 0 40px #fff6d5aa}
+#castle{position:fixed;left:0;bottom:0;width:100%;height:150px;opacity:.55}
+.top{position:relative;text-align:center;padding-top:calc(env(safe-area-inset-top) + 28px)}
+#coins{font-size:44px;font-weight:800;text-shadow:0 3px 0 #0007}
+#rank{display:inline-block;margin-top:6px;padding:5px 14px;border-radius:20px;background:#ffffff22;font-size:14px}
+#stage{position:relative;width:270px;height:330px;margin:14px auto 0;transition:transform .08s;filter:drop-shadow(0 14px 18px #000b)}
+#stage.hit{transform:scale(.93) rotate(-2deg)}
+#stage svg{width:100%;height:100%}
+.bottom{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 22px);text-align:center}
+#up{padding:16px 30px;font-size:18px;font-weight:800;border:0;border-radius:16px;color:#2b1d00;background:linear-gradient(#ffe066,#f5a800);box-shadow:0 5px 0 #a86f00,0 10px 24px #0008}
+#up:active{transform:translateY(3px);box-shadow:0 2px 0 #a86f00}
+.f{position:fixed;pointer-events:none;font-weight:800;font-size:28px;color:#ffd84d;text-shadow:0 2px 0 #000a;animation:fl .8s ease-out forwards}
+@keyframes fl{to{transform:translateY(-100px);opacity:0}}
 </style></head><body>
-<div id="coins"></div><div id="info"></div>
-<div id="k">🤺</div>
-<button id="up"></button>
+<div id="stars"></div><div id="moon"></div>
+<svg id="castle" viewBox="0 0 400 120" preserveAspectRatio="xMidYMax slice"><path fill="#12082a" d="M0 120V80h30V60h10V50h10v10h10v20h30V70h10V40h10V28h8v12h10v30h20V90h40V75h12V65h8v10h12v15h30V60h12V45h10v15h10v30h30V80h40v40z"/></svg>
+<div class="top"><div id="coins"></div><div id="rank"></div></div>
+<div id="stage"></div>
+<div class="bottom"><button id="up"></button></div>
 <script>
 let s=JSON.parse(localStorage.getItem('kc')||'{"c":0,"l":1}');
+const R=['Зброєносець','Воїн','Лицар','Паладин','Легенда'];
 const per=()=>s.l, cost=()=>Math.floor(10*Math.pow(1.6,s.l-1));
+const tier=()=>Math.min(4,Math.floor((s.l-1)/3));
+function knight(){
+const l=s.l,t=tier();
+const C=[['#7a5a3a','#a07a52'],['#8f9aa6','#c3ccd6'],['#b5bfcc','#e6edf5'],['#d9a300','#ffd84d'],['#8a3ffc','#d8a8ff']][t];
+const w=34+Math.min(l,20)*1.6, a=9+Math.min(l,20)*.7;
+const sx=100+w+a-6;
+return `<svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="${C[0]}"/><stop offset="1" stop-color="${C[1]}"/></linearGradient></defs>
+${t==4?'<circle cx="100" cy="130" r="108" fill="#b46cff" opacity=".28"/>':''}
+<path d="M${100-w} 95L${100+w} 95L${112+w} 228L${88-w} 228Z" fill="#c0392b"/>
+<rect x="70" y="185" width="24" height="62" rx="9" fill="url(#g)"/>
+<rect x="106" y="185" width="24" height="62" rx="9" fill="url(#g)"/>
+<path d="M${100-w} 100Q100 88 ${100+w} 100L${100+w*.6} 195L${100-w*.6} 195Z" fill="url(#g)"/>
+<rect x="${100-w*.6}" y="170" width="${w*1.2}" height="10" fill="#3b2a14"/>
+<circle cx="100" cy="175" r="6" fill="#ffd84d"/>
+<rect x="${100-w-a+4}" y="100" width="${a}" height="64" rx="${a/2}" fill="url(#g)"/>
+<rect x="${100+w-4}" y="100" width="${a}" height="64" rx="${a/2}" fill="url(#g)"/>
+<circle cx="${100-w}" cy="104" r="${a*.9}" fill="url(#g)"/>
+<circle cx="${100+w}" cy="104" r="${a*.9}" fill="url(#g)"/>
+<path d="M${100-w-34} 128h36v30q-18 24-36 0z" fill="#2c3e8f" stroke="#ffd84d" stroke-width="3"/>
+<rect x="${sx}" y="36" width="8" height="106" rx="2" fill="#eaf1f8"/>
+<rect x="${sx-9}" y="138" width="26" height="7" rx="3" fill="#ffd84d"/>
+<circle cx="100" cy="70" r="27" fill="url(#g)"/>
+<rect x="82" y="65" width="36" height="9" rx="4" fill="#10131f"/>
+<path d="M100 44q-14-22 16-26q-5 14-3 26z" fill="#e74c3c"/>
+</svg>`}
 function draw(){
 coins.textContent=Math.floor(s.c)+' 🪙';
-info.textContent='Рівень '+s.l+' · +'+per()+' за тап';
-up.textContent='Покращити: '+cost()+' 🪙';
-k.style.fontSize=(100+s.l*8)+'px';
-localStorage.setItem('kc',JSON.stringify(s));}
-k.onclick=()=>{s.c+=per();draw();k.style.transform='scale(.9)';setTimeout(()=>k.style.transform='',80)};
-up.onclick=()=>{if(s.c>=cost()){s.c-=cost();s.l++;draw()}};
-Telegram.WebApp.ready();Telegram.WebApp.expand();draw();
+rank.textContent=R[tier()]+' · рівень '+s.l+' · +'+per()+' за тап';
+up.textContent='⬆️ Прокачати · '+cost()+' 🪙';
+up.style.opacity=s.c>=cost()?1:.55;
+try{localStorage.setItem('kc',JSON.stringify(s))}catch(e){}}
+function float(x,y,t){const d=document.createElement('div');d.className='f';d.textContent=t;d.style.left=(x-16)+'px';d.style.top=(y-30)+'px';document.body.appendChild(d);setTimeout(()=>d.remove(),800)}
+stage.addEventListener('pointerdown',e=>{
+s.c+=per();draw();
+stage.classList.add('hit');setTimeout(()=>stage.classList.remove('hit'),80);
+float(e.clientX,e.clientY,'+'+per());
+try{Telegram.WebApp.HapticFeedback.impactOccurred('light')}catch(_){}});
+up.onclick=()=>{if(s.c>=cost()){s.c-=cost();s.l++;stage.innerHTML=knight();draw();
+try{Telegram.WebApp.HapticFeedback.notificationOccurred('success')}catch(_){}}};
+try{Telegram.WebApp.ready();Telegram.WebApp.expand()}catch(_){}
+stage.innerHTML=knight();draw();
 </script></body></html>
