@@ -1,4 +1,3 @@
-
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const corsHeaders = {
@@ -13,7 +12,10 @@ function toHex(buffer: ArrayBuffer): string {
     .join("");
 }
 
-async function hmac(key: ArrayBuffer, message: string): Promise<ArrayBuffer> {
+async function hmac(
+  key: ArrayBuffer,
+  message: string,
+): Promise<ArrayBuffer> {
   const cryptoKey = await crypto.subtle.importKey(
     "raw",
     key,
@@ -33,7 +35,9 @@ async function verifyTelegram(initData: string, botToken: string) {
   const params = new URLSearchParams(initData);
   const receivedHash = params.get("hash");
 
-  if (!receivedHash) throw new Error("Missing Telegram hash");
+  if (!receivedHash) {
+    throw new Error("Missing Telegram hash");
+  }
 
   params.delete("hash");
 
@@ -45,10 +49,10 @@ async function verifyTelegram(initData: string, botToken: string) {
     .map(([key, value]) => `${key}=${value}`)
     .join("\n");
 
-  // Correct Telegram WebApp secret key calculation
+  // Правильний алгоритм перевірки Telegram WebApp
   const secretKey = await hmac(
-    new TextEncoder().encode(botToken).buffer,
-    "WebAppData",
+    new TextEncoder().encode("WebAppData").buffer,
+    botToken,
   );
 
   const calculatedHash = toHex(
@@ -78,7 +82,9 @@ async function verifyTelegram(initData: string, botToken: string) {
 
   const userRaw = params.get("user");
 
-  if (!userRaw) throw new Error("Missing Telegram user");
+  if (!userRaw) {
+    throw new Error("Missing Telegram user");
+  }
 
   const user = JSON.parse(userRaw);
 
@@ -96,14 +102,12 @@ Deno.serve(async (req) => {
 
   if (req.method !== "POST") {
     return Response.json(
-      { error: "Method not allowed" },
+      { success: false, error: "Method not allowed" },
       { status: 405, headers: corsHeaders },
     );
   }
 
   try {
-    console.log("Game request received");
-
     const botToken = Deno.env.get("TELEGRAM_BOT_TOKEN");
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
@@ -117,7 +121,7 @@ Deno.serve(async (req) => {
 
     if (typeof initData !== "string" || !initData) {
       return Response.json(
-        { error: "Missing initData" },
+        { success: false, error: "Missing initData" },
         { status: 400, headers: corsHeaders },
       );
     }
@@ -156,8 +160,6 @@ Deno.serve(async (req) => {
       throw new Error("Could not load player");
     }
 
-    console.log("Player connected:", user.id);
-
     return Response.json(
       { success: true, player },
       { headers: corsHeaders },
@@ -168,9 +170,11 @@ Deno.serve(async (req) => {
     return Response.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : "Unknown server error",
+        error: error instanceof Error
+          ? error.message
+          : "Unknown server error",
       },
-      { status: 401, headers: corsHeaders },
+      { status: 500, headers: corsHeaders },
     );
   }
 });
