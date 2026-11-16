@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<title>Knight Clicker</title>
+<style>
+body{margin:0;height:100vh;background:linear-gradient(#1b1f4b,#3a2a5e);color:#fff;font-family:sans-serif;text-align:center;user-select:none;-webkit-user-select:none}
+#coins{font-size:40px;padding-top:30px}
+#info{opacity:.8;margin:6px}
+#k{margin-top:30px;transition:transform .08s;line-height:1.2}
+button{margin-top:30px;padding:16px 28px;font-size:18px;border:0;border-radius:14px;background:#f5b800;color:#222;font-weight:bold}
+</style></head><body>
+<div id="coins"></div><div id="info"></div>
+<div id="k">🤺</div>
+<button id="up"></button>
+<script>
+let s=JSON.parse(localStorage.getItem('kc')||'{"c":0,"l":1}');
+const per=()=>s.l, cost=()=>Math.floor(10*Math.pow(1.6,s.l-1));
+function draw(){
+coins.textContent=Math.floor(s.c)+' 🪙';
+info.textContent='Рівень '+s.l+' · +'+per()+' за тап';
+up.textContent='Покращити: '+cost()+' 🪙';
+k.style.fontSize=(100+s.l*8)+'px';
+localStorage.setItem('kc',JSON.stringify(s));}
+k.onclick=()=>{s.c+=per();draw();k.style.transform='scale(.9)';setTimeout(()=>k.style.transform='',80)};
+up.onclick=()=>{if(s.c>=cost()){s.c-=cost();s.l++;draw()}};
+Telegram.WebApp.ready();Telegram.WebApp.expand();draw();
+</script></body></html>
