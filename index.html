@@ -159,7 +159,7 @@ async function api(action,extra={},keepalive=false){
  });
  let data;
  try{data=await response.json()}catch(e){throw new Error('Сервер повернув некоректну відповідь')}
- if(!response.ok||!data.success)throw new Error(...);
+ if(!response.ok||!data.success)throw new Error('['+response.status+'] '+String(data.error||data.message||JSON.stringify(data)).slice(0,150));
  return data;
 }
  function hasCloudProgress(g){
