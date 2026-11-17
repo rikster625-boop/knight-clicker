@@ -219,6 +219,7 @@ async function connectAccount(){
    await cloudSave();
   }
   cloudReady=true;
+  s.ref=Number(data.invited)||0;
   if(data.referralRegistered)toast('🎉 Реферальний бонус нараховано!');
   save();
   checkDay();
