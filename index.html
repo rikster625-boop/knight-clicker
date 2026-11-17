@@ -485,7 +485,7 @@ async function loadLeaderboard(){
 
 /* ДРУЗІ */
 const uid=()=>{try{return tg.initDataUnsafe.user.id}catch(e){return'guest'}};
-const link=()=> 'https://t.me/'+BOT+'?start=ref_'+uid();
+const link=()=> 'https://t.me/'+BOT+'/play?startapp=ref_'+uid();
 function cp(t){
  const f=()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}a.remove();toast('Скопійовано ✅')};
  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(()=>toast('Скопійовано ✅')).catch(f);else f();
