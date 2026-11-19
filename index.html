@@ -108,7 +108,7 @@ body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-
 </div></div>
 
 <script>
-const VER='7';
+const VER='8';
 const tg=window.Telegram&&Telegram.WebApp;
 const CHANNEL='ClickerHeroGameNews';
 const BOT='ClickerHeroGameBot';
@@ -335,7 +335,7 @@ const IMG={};
 const HEROES=['hero_1','hero_2','hero_3','hero_4','hero_5'];
 const BOSSES=['boss_werewolf','boss_swamp_dragon','boss_skeleton_king','boss_fire_dragon','boss_shadow_king'];
 const FILES=HEROES.concat(BOSSES);
-function spr(n,fb){return IMG[n]?'<img src="'+n+'.png?v='+VER+'" alt="" draggable="false">':fb}
+function spr(n,fb){return IMG[n]?'<img src="'+n+'.png.PNG?v='+VER+'" alt="" draggable="false">':fb}
 function renderKnight(){$('kn').innerHTML=spr(HEROES[tier()],hero())}
 function updHP(){const mx=mhpMax();$('mbi').style.width=Math.max(0,s.mh/mx*100)+'%';$('mhp').textContent=fmt(Math.max(0,s.mh))+' / '+fmt(mx)}
 function renderMon(){
@@ -522,7 +522,7 @@ if(!s.intro)$('intro').classList.add('on');
 $('go').onclick=()=>{s.intro=1;save();$('intro').classList.remove('on')};
 
 Promise.all(FILES.map(n=>new Promise(r=>{
- const i=new Image();i.onload=()=>{IMG[n]=1;r()};i.onerror=()=>r();i.src=n+'.png?v='+VER;
+ const i=new Image();i.onload=()=>{IMG[n]=1;r()};i.onerror=()=>r();i.src=n+'.png.PNG?v='+VER;
 }))).then(()=>{renderKnight();renderMon()});
 
 connectAccount();
