@@ -108,7 +108,7 @@ body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-
 </div></div>
 
 <script>
-const VER='6';
+const VER='7';
 const tg=window.Telegram&&Telegram.WebApp;
 const CHANNEL='ClickerHeroGameNews';
 const BOT='ClickerHeroGameBot';
@@ -246,7 +246,8 @@ const CH=[
 ];
 const per=()=>Math.ceil(s.l*Math.pow(1.12,s.l-1));
 const cost=()=>Math.floor(10*Math.pow(1.6,s.l-1));
-const tier=()=>Math.min(4,Math.floor((s.l-1)/4));
+/* герой змінюється кожні 10 рівнів: 1-9, 10-19, 20-29, 30-39, 40+ */
+const tier=()=>Math.min(4,Math.floor(s.l/10));
 const emax=()=>100+10*(s.l-1);
 const isBoss=()=>s.w%10==0;
 const chap=()=>Math.floor((s.w-1)/10)%5;
@@ -294,7 +295,7 @@ function sky(){
  const hh=h>=19?h-19:h+5;orb($('moon'),hh/11,h>=19||h<=6);
 }
 
-/* ЛИЦАР */
+/* ЛИЦАР (запасний SVG, якщо картинка не завантажилась) */
 function hero(){
  const t=tier(),l=s.l,cx=100,cy=86;
  const sc2=[.72,.82,.9,.97,1][t]*(1+((l-1)%4)*.012);
@@ -329,15 +330,17 @@ function hero(){
  return o+'</g></svg>';
 }
 
-/* МОНСТРИ */
+/* МОНСТРИ І ГЕРОЇ: картинки в корені репозиторію */
 const IMG={};
-const FILES=['k1','k2','k3','k4','k5','m1','m2','m3','m4','m5'];
+const HEROES=['hero_1','hero_2','hero_3','hero_4','hero_5'];
+const BOSSES=['boss_werewolf','boss_swamp_dragon','boss_skeleton_king','boss_fire_dragon','boss_shadow_king'];
+const FILES=HEROES.concat(BOSSES);
 function spr(n,fb){return IMG[n]?'<img src="'+n+'.png?v='+VER+'" alt="" draggable="false">':fb}
-function renderKnight(){$('kn').innerHTML=spr('k'+(tier()+1),hero())}
+function renderKnight(){$('kn').innerHTML=spr(HEROES[tier()],hero())}
 function updHP(){const mx=mhpMax();$('mbi').style.width=Math.max(0,s.mh/mx*100)+'%';$('mhp').textContent=fmt(Math.max(0,s.mh))+' / '+fmt(mx)}
 function renderMon(){
  const c=chap(),b=isBoss();$('mn').className=b?'boss':'';
- $('mn').innerHTML=spr('m'+(c+1),'<div class="em">'+(b?CH[c].bm:CH[c].m[(s.w-1)%4])+'</div>');
+ $('mn').innerHTML=spr(BOSSES[c],'<div class="em">'+(b?CH[c].bm:CH[c].m[(s.w-1)%4])+'</div>');
  $('mname').textContent=(b?'👑 БОС: '+CH[c].b:'Прислужник Тіні')+' · хвиля '+s.w;updHP();
 }
 
