@@ -192,6 +192,7 @@ async function cloudSave(keepalive=false){
    base=Number(data.wallet.coins);
   }else base=sentC;
   if(data.bonus>0)toast('🎉 Бонус за друзів: +'+fmt(data.bonus)+' 🪙');
+  if(data.keys_given>0){toast('🔑 +'+data.keys_given+' за боса!');hap('n','success')}
   draw();
   $('cloud').textContent='☁️ Прогрес збережено ✅';
  }catch(e){
@@ -391,6 +392,7 @@ function kill(){
  let msg='+'+fmt(rew)+' 🪙';
  if(boss){s.bosses++;dc('boss',1);s.e=emax();msg=s.w%50==0?'👑 Король Тіні переможений! Але Тінь повертається сильнішою…':'⚔️ Бос «'+CH[c].b+'» переможений! Енергія відновлена ⚡';hap('n','success')}
  s.w++;s.mh=mhpMax();toast(msg);renderMon();
+ if(boss&&cloudReady){cloudDirty=true;cloudSave()}
 }
 $('field').addEventListener('pointerdown',e=>{
  checkDay();
