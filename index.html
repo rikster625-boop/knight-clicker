@@ -111,7 +111,7 @@ body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-
 </div></div>
 
 <script>
-const VER='8';
+const VER='14';
 const tg=window.Telegram&&Telegram.WebApp;
 const CHANNEL='ClickerHeroGameNews';
 const BOT='ClickerHeroGameBot';
@@ -354,13 +354,15 @@ function hero(){
 const IMG={};
 const HEROES=['hero_1','hero_2','hero_3','hero_4','hero_5'];
 const BOSSES=['boss_werewolf','boss_swamp_dragon','boss_skeleton_king','boss_fire_dragon','boss_shadow_king'];
-const FILES=HEROES.concat(BOSSES);
+const MINIONS=[0,1,2,3,4].map(c=>['goblin_'+(2*c+1),'mob_'+(2*c+1),'goblin_'+(2*c+2),'mob_'+(2*c+2)]);
+const FILES=HEROES.concat(BOSSES,[].concat(...MINIONS));
 function spr(n,fb){return IMG[n]?'<img src="'+n+'.png.PNG?v='+VER+'" alt="" draggable="false">':fb}
 function renderKnight(){$('kn').innerHTML=spr(HEROES[tier()],hero())}
 function updHP(){const mx=mhpMax();$('mbi').style.width=Math.max(0,s.mh/mx*100)+'%';$('mhp').textContent=fmt(Math.max(0,s.mh))+' / '+fmt(mx)}
 function renderMon(){
  const c=chap(),b=isBoss();$('mn').className=b?'boss':'';
- $('mn').innerHTML=spr(BOSSES[c],'<div class="em">'+(b?CH[c].bm:CH[c].m[(s.w-1)%4])+'</div>');
+ const k=(s.w-1)%4;
+ $('mn').innerHTML=b?spr(BOSSES[c],'<div class="em">'+CH[c].bm+'</div>'):spr(MINIONS[c][k],'<div class="em">'+CH[c].m[k]+'</div>');
  $('mname').textContent=(b?'👑 БОС: '+CH[c].b:'Прислужник Тіні')+' · хвиля '+s.w;updHP();
 }
 
@@ -562,9 +564,9 @@ if(r0.away&&r0.inc>=1)toast('Поки тебе не було, замок зар�
 if(!s.intro)$('intro').classList.add('on');
 $('go').onclick=()=>{s.intro=1;save();$('intro').classList.remove('on')};
 
-Promise.all(FILES.map(n=>new Promise(r=>{
- const i=new Image();i.onload=()=>{IMG[n]=1;r()};i.onerror=()=>r();i.src=n+'.png.PNG?v='+VER;
-}))).then(()=>{renderKnight();renderMon()});
+FILES.forEach(n=>{
+ const i=new Image();i.onload=()=>{IMG[n]=1;renderKnight();renderMon()};i.src=n+'.png.PNG?v='+VER;
+});
 
 connectAccount();
 
