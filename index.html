@@ -95,13 +95,13 @@ body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-
  </div>
  <div class="bt"><button id="up"></button></div>
 </div>
-<div class="pn" id="v1"></div><div class="pn" id="v2"></div><div class="pn" id="v3"></div><div class="pn" id="v4"></div>
+<div class="pn" id="v1"></div><div class="pn" id="v2"></div><div class="pn" id="v3"></div><div class="pn" id="v4"></div><div class="pn" id="v5"></div><div class="pn" id="v6"></div><div class="pn" id="v7"></div>
 <div id="nav">
  <button class="on" data-i="0"><b>⚔️</b>Гра</button>
  <button data-i="1"><b>🏰</b>Замок</button>
- <button data-i="2"><b>📋</b>Завдання</button>
- <button data-i="3"><b>🏆</b>Турнір</button>
- <button data-i="4"><b>👥</b>Друзі</button>
+ <button data-i="5"><b>🎮</b>Мініігри</button>
+ <button data-i="6"><b>📦</b>Скрині</button>
+ <button data-i="7"><b>☰</b>Ще</button>
 </div>
 <div id="toast"></div>
 <div id="intro"><div class="box">
@@ -526,13 +526,31 @@ $('v4').onclick=e=>{
  else{const u='https://t.me/share/url?url='+encodeURIComponent(link())+'&text='+encodeURIComponent('Грай у Knight Clicker і прокачуй лицаря! ⚔️');try{tg.openTelegramLink(u)}catch(_){window.open(u)}}
 };
 
+/* МІНІІГРИ, СКРИНІ, МЕНЮ «ЩЕ» */
+function renderMini(){
+ $('v5').innerHTML='<div class="cd"><h3>⚔️ Підземелля</h3><p>Скоро: бій із монстром у стилі «три в ряд». Не витрачає енергію, нагороди раз на добу.</p></div>';
+}
+function renderChests(){
+ $('v6').innerHTML='<div class="cd"><h3>📦 Щоденні скрині</h3><p>Скоро: три скрині на день, у одній із них скарб.</p><p>Твої ключі: <b>🔑 '+W.keys+'</b></p><p class="sm">Ключі дають додаткові спроби. Їх можна отримати за перемогу над босами.</p></div>';
+}
+const MORE=[[2,'📋','Завдання','Щоденні та постійні завдання'],[3,'🏆','Турнір','Рейтинг гравців за день'],[4,'👥','Друзі','Запроси друзів і отримай бонус']];
+function renderMore(){
+ let h='';
+ MORE.forEach(m=>{h+='<div class="cd"><div class="row"><div><b>'+m[1]+' '+m[2]+'</b><p>'+m[3]+'</p></div><button class="b" data-go="'+m[0]+'">Відкрити</button></div></div>'});
+ $('v7').innerHTML=h;
+}
+$('v7').onclick=e=>{const b=e.target.closest('button[data-go]');if(b)show(+b.dataset.go)};
+
 /* ВКЛАДКИ */
 let cur=0;
+const IN_MORE=[2,3,4];
 function show(i){
  cur=i;$('v0').classList.toggle('on',i==0);
- [1,2,3,4].forEach(k=>$('v'+k).classList.toggle('on',i==k));
- document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.i==i));
- if(i==1)renderCastle();if(i==2)renderTasks();if(i==3)renderTour();if(i==4)renderFr();hap('i');
+ [1,2,3,4,5,6,7].forEach(k=>$('v'+k).classList.toggle('on',i==k));
+ const nb=IN_MORE.includes(i)?7:i;
+ document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.i==nb));
+ if(i==1)renderCastle();if(i==2)renderTasks();if(i==3)renderTour();if(i==4)renderFr();
+ if(i==5)renderMini();if(i==6)renderChests();if(i==7)renderMore();hap('i');
 }
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>show(+b.dataset.i));
 
