@@ -33,18 +33,19 @@ body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-
 #ent{position:relative;font-size:11px;font-weight:700;line-height:16px}
 #cloud{font-size:11px;margin-top:4px;opacity:.8}
 .view{position:fixed;inset:0;display:none}.view.on{display:block}
-#field{position:absolute;left:0;right:0;height:min(300px,38vh);bottom:calc(env(safe-area-inset-bottom) + 160px)}
+#field{position:absolute;left:0;right:0;height:min(350px,41vh);bottom:calc(env(safe-area-inset-bottom) + 160px)}
 #kn{position:absolute;left:1%;bottom:0;height:100%;transition:transform .08s;filter:drop-shadow(0 12px 12px #0009)}
 #kn.atk{transform:translateX(26px) rotate(3deg)}
-#mn{position:absolute;right:1%;bottom:0;height:78%;display:flex;align-items:flex-end;filter:drop-shadow(0 12px 12px #0009)}
-#mn.boss{height:100%;filter:drop-shadow(0 0 18px #ef4444aa)}
+#mn{position:absolute;right:1%;bottom:0;height:84%;display:flex;align-items:flex-end;filter:drop-shadow(0 12px 12px #0009)}
+#mn.boss{height:112%;filter:drop-shadow(0 0 18px #ef4444aa)}
 #mn.hurt{animation:sh .14s}
 @keyframes sh{25%{transform:translateX(8px)}75%{transform:translateX(-8px)}}
 #kn svg{height:100%;width:auto;aspect-ratio:200/280;display:block}
-#kn img,#mn img{height:100%;width:auto;max-width:46vw;object-fit:contain;display:block;pointer-events:none}
+#kn img,#mn img{height:100%;width:auto;max-width:50vw;object-fit:contain;display:block;pointer-events:none}
 .em{font-size:min(130px,17vh);line-height:1}
 #mn.boss .em{font-size:min(190px,24vh)}
 #mh{position:absolute;right:2%;top:-40px;width:52%;text-align:center;font-size:12px;text-shadow:0 1px 2px #000;pointer-events:none}
+#field.bw #mh{top:-66px}
 #mbar{height:12px;border-radius:8px;background:#0008;overflow:hidden;margin-top:3px;border:1px solid #fff3}
 #mbi{display:block;height:100%;width:100%;background:linear-gradient(90deg,#ef4444,#f97316);transition:width .1s}
 .bt{position:absolute;left:0;right:0;text-align:center;bottom:calc(env(safe-area-inset-bottom) + 84px)}
@@ -361,7 +362,7 @@ function spr(n,fb){return IMGURL[n]?'<img src="'+IMGURL[n]+'" alt="" draggable="
 function renderKnight(){$('kn').innerHTML=spr(HEROES[tier()],hero())}
 function updHP(){const mx=mhpMax();$('mbi').style.width=Math.max(0,s.mh/mx*100)+'%';$('mhp').textContent=fmt(Math.max(0,s.mh))+' / '+fmt(mx)}
 function renderMon(){
- const c=chap(),b=isBoss();$('mn').className=b?'boss':'';
+ const c=chap(),b=isBoss();$('mn').className=b?'boss':'';$('field').classList.toggle('bw',b);
  const k=(s.w-1)%4;
  $('mn').innerHTML=b?spr(BOSSES[c],'<div class="em">'+CH[c].bm+'</div>'):spr(MINIONS[c][k],'<div class="em">'+CH[c].m[k]+'</div>');
  $('mname').textContent=(b?'👑 БОС: '+CH[c].b:'Прислужник Тіні')+' · хвиля '+s.w;updHP();
