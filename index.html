@@ -24,6 +24,8 @@ body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-
 #ground{position:fixed;left:0;bottom:0;width:100%;height:24vh}
 #hd{position:fixed;top:0;left:0;right:0;text-align:center;padding-top:calc(env(safe-area-inset-top) + 12px);z-index:5;pointer-events:none}
 #coins{font-size:38px;font-weight:800;text-shadow:0 3px 0 #0008}
+#wal{position:absolute;right:10px;top:calc(env(safe-area-inset-top) + 14px);display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+#wal span{background:#0007;border:1px solid #fff3;border-radius:14px;padding:3px 10px;font-size:14px;font-weight:800}
 #rank{display:inline-block;margin-top:2px;padding:4px 14px;border-radius:20px;background:#0007;font-size:13px}
 #chap{font-size:12px;opacity:.85;margin-top:4px;text-shadow:0 1px 2px #000}
 #en{position:relative;width:210px;height:18px;margin:6px auto 0;border-radius:10px;background:#0007;overflow:hidden;border:1px solid #fff3}
@@ -81,6 +83,7 @@ body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-
 <svg id="castle" viewBox="0 0 400 120" preserveAspectRatio="xMidYMax slice"><path d="M0 120V80h30V60h10V50h10v10h10v20h30V70h10V40h10V28h8v12h10v30h20V90h40V75h12V65h8v10h12v15h30V60h12V45h10v15h10v30h30V80h40v40z"/></svg>
 <svg id="ground" viewBox="0 0 400 100" preserveAspectRatio="none"><path style="fill:var(--g2,#2a8a3c)" d="M0 40Q100 5 200 35T400 25V100H0z"/><path style="fill:var(--g1,#38a84d)" d="M0 60Q120 30 240 55T400 50V100H0z"/></svg>
 <div id="hd">
+ <div id="wal"><span id="wcr">💎 0</span><span id="wkey">🔑 0</span></div>
  <div id="coins"></div><div id="rank"></div><div id="chap"></div>
  <div id="en"><i id="enf"></i><span id="ent"></span></div>
  <div id="cloud">☁️ Очікування підключення...</div>
@@ -139,6 +142,8 @@ if(!Array.isArray(s.bl)||s.bl.length!=5)s.bl=[0,0,0,0,0];
 
 let cloudReady=false,cloudBusy=false,cloudDirty=false,cloudTimer=null;
 let leaderboardBusy=false;
+let W={crystals:0,fragments:0,keys:0},rev=0,base=0;
+function applyWallet(w){if(!w)return;W.crystals=Number(w.crystals)||0;W.fragments=Number(w.fragments)||0;W.keys=Number(w.keys)||0}
 
 function save(){
  try{localStorage.setItem('kc3',JSON.stringify(s))}catch(e){}
@@ -177,8 +182,17 @@ async function cloudSave(keepalive=false){
  if(!cloudReady||!cloudDirty||cloudBusy)return;
  cloudBusy=true;
  try{
-  await api('save',{state:s},keepalive);
+  const sentC=Math.floor(s.c);
+  const data=await api('save',{state:s,rev:rev,base:base},keepalive);
   cloudDirty=false;
+  rev=Number(data.rev)||0;
+  applyWallet(data.wallet);
+  if(data.resync&&data.wallet){
+   s.c=Number(data.wallet.coins)+(s.c-sentC);
+   base=Number(data.wallet.coins);
+  }else base=sentC;
+  if(data.bonus>0)toast('🎉 Бонус за друзів: +'+fmt(data.bonus)+' 🪙');
+  draw();
   $('cloud').textContent='☁️ Прогрес збережено ✅';
  }catch(e){
   console.error('Cloud save:',e);
@@ -202,6 +216,8 @@ async function connectAccount(){
   const data=await api('load',{refCode});
   const player=data.player||{};
   const cloudState=player.game_state;
+  rev=Number(data.rev)||0;
+  applyWallet(data.wallet);
   if(hasCloudProgress(cloudState)){
    s=Object.assign({},def,cloudState);
    if(!s.done)s.done={};
@@ -213,7 +229,9 @@ async function connectAccount(){
    s.w=Math.max(1,Number(player.wave)||s.w||1);
    s.pt=Number(s.pt)||Date.now();
    if(s.mh<=0||s.mh>mhpMax())s.mh=mhpMax();
+   base=Math.floor(s.c);
   }else{
+   base=Math.floor(s.c);
    cloudReady=true;
    cloudDirty=true;
    await cloudSave();
@@ -221,6 +239,7 @@ async function connectAccount(){
   cloudReady=true;
   s.ref=Number(data.invited)||0;
   if(data.referralRegistered)toast('🎉 Реферальний бонус нараховано!');
+  else if(data.bonus>0)toast('🎉 Бонус за друзів: +'+fmt(data.bonus)+' 🪙');
   save();
   checkDay();
   renderKnight();renderMon();draw();
@@ -358,6 +377,8 @@ function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.i
 /* ГРА */
 function draw(){
  $('coins').textContent=fmt(s.c)+' 🪙';
+ $('wcr').textContent='💎 '+W.crystals;
+ $('wkey').textContent='🔑 '+W.keys;
  $('rank').textContent=RANKS[tier()]+' · рів. '+s.l+' · удар '+fmt(per());
  $('chap').textContent='Розділ '+(chap()+1)+': '+CH[chap()].n+(income()>0?' · 🏰 +'+fmt(income())+'/год':'');
  const mx=emax();$('enf').style.width=Math.min(100,s.e/mx*100)+'%';$('ent').textContent='⚡ '+Math.floor(s.e)+' / '+mx;
