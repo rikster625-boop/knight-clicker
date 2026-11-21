@@ -66,23 +66,65 @@ body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-
 #nav button.on{color:#ffd84d}
 .f{position:fixed;pointer-events:none;font-weight:800;font-size:26px;color:#ffd84d;text-shadow:0 2px 0 #000a;animation:fl .8s ease-out forwards;z-index:4}
 @keyframes fl{to{transform:translateY(-100px);opacity:0}}
-#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 150px);transform:translateX(-50%);background:#000d;padding:10px 18px;border-radius:14px;font-weight:700;opacity:0;transition:opacity .3s;z-index:9;pointer-events:none;max-width:90%;text-align:center;font-size:14px}
+#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 150px);transform:translateX(-50%);background:#000d;padding:10px 18px;border-radius:14px;font-weight:700;opacity:0;transition:opacity .3s;z-index:30;pointer-events:none;max-width:90%;text-align:center;font-size:14px}
 #intro{position:fixed;inset:0;background:#000d;display:none;align-items:center;justify-content:center;z-index:20;padding:24px}
 #intro.on{display:flex}
 #intro .box{background:#141a48;border:1px solid #ffffff33;border-radius:20px;padding:22px;max-width:380px;text-align:center}
 #intro h2{margin:0 0 10px}#intro p{font-size:15px;line-height:1.45;margin:0 0 16px}
+
+#bg{position:fixed;inset:0;background:#0b1030 center bottom/cover no-repeat}
+#nov{position:fixed;inset:0;background:#060a28;opacity:0;pointer-events:none}
+#wov{position:fixed;inset:0;background:#ff7a3c;opacity:0;pointer-events:none;mix-blend-mode:soft-light}
+#stars{bottom:50%;-webkit-mask-image:linear-gradient(#000 60%,transparent);mask-image:linear-gradient(#000 60%,transparent)}
+#wal{pointer-events:auto}#wal span{cursor:pointer}
+.chrow{display:flex;justify-content:space-around;gap:8px;margin-top:6px}
+.chb{flex:1;border:1px solid #ffffff33;border-radius:16px;background:#141a48;color:#fff;padding:14px 4px 10px;font-size:46px;line-height:1}
+.chb small{display:block;font-size:12px;margin-top:8px;opacity:.85}
+.chb[disabled]{opacity:.55}
+#dg{position:fixed;inset:0;z-index:12;display:none;flex-direction:column;background:linear-gradient(#10143a,#07091f);padding:calc(env(safe-area-inset-top) + 8px) 10px calc(env(safe-area-inset-bottom) + 8px);gap:6px}
+#dg.on{display:flex}
+#dgtop{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px}
+#dgx{padding:6px 12px}
+#dgmon{text-align:center}
+#dgmimg img{height:15vh;width:auto;max-width:60vw;object-fit:contain;filter:drop-shadow(0 6px 8px #0009)}
+#dgmimg .em{font-size:12vh}
+.bar{height:12px;border-radius:8px;background:#0008;overflow:hidden;border:1px solid #fff3;margin-top:3px}
+.bar i{display:block;height:100%;width:100%;transition:width .2s}
+#dgmi{background:linear-gradient(90deg,#ef4444,#f97316)}
+#dgkh{background:linear-gradient(90deg,#22c55e,#86efac)}
+#dgmg{background:linear-gradient(90deg,#a855f7,#d8b4fe);width:0}
+#dgk{display:flex;align-items:center;gap:8px}
+#dgkimg img{height:9vh;width:auto}
+#dgkb{flex:1;font-size:12px}
+#dgrow{display:flex;justify-content:space-between;align-items:center;margin-top:3px;font-size:12px}
+#dgsp{display:none;padding:5px 10px;font-size:12px}
+#dgbd{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;width:min(100%,calc(100vh - 345px));aspect-ratio:1;margin:0 auto;touch-action:none}
+.gm{position:relative;border-radius:28%;display:flex;align-items:center;justify-content:center;font-size:min(5vw,21px);line-height:1;user-select:none;transition:transform .12s}
+.gm.s{outline:3px solid #fff;transform:scale(1.1);z-index:2}
+.gm.pop{animation:gp .22s forwards}
+@keyframes gp{to{transform:scale(0);opacity:0}}
+.g0{background:radial-gradient(circle at 30% 30%,#ff9a9a,#d62828)}
+.g1{background:radial-gradient(circle at 30% 30%,#9cc7ff,#1d4ed8)}
+.g2{background:radial-gradient(circle at 30% 30%,#a7f3b4,#15803d)}
+.g3{background:radial-gradient(circle at 30% 30%,#fff3a0,#ca8a04)}
+.g4{background:radial-gradient(circle at 30% 30%,#e3c4ff,#7e22ce)}
+.gm.sp{box-shadow:0 0 8px 2px #fff,inset 0 0 6px #fff}
+.gm.sp:after{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:min(7vw,28px);color:#fff;text-shadow:0 0 4px #000,0 0 8px #000}
+.gm[data-sp="1"]:after{content:"↔"}.gm[data-sp="2"]:after{content:"↕"}.gm[data-sp="3"]:after{content:"★"}
+#dgres{position:absolute;inset:0;background:#000c;display:none;align-items:center;justify-content:center;padding:24px;z-index:5}
+#dgres.on{display:flex}
+#dgres .box{background:#141a48;border:1px solid #ffffff33;border-radius:20px;padding:22px;max-width:380px;text-align:center}
+#dgres h2{margin:0 0 10px}#dgres p{margin:0 0 14px;font-size:15px;line-height:1.45}
 </style>
 </head>
 <body>
-<div id="sky"></div><div id="stars"></div>
+<div id="sky"></div><div id="bg"></div><div id="nov"></div><div id="wov"></div><div id="stars"></div>
 <div class="orb" id="sun"></div><div class="orb" id="moon"></div>
 <div id="clouds">
  <div class="cl" style="top:20%;width:90px;animation-duration:70s"></div>
  <div class="cl" style="top:30%;width:70px;animation-duration:95s;animation-delay:-40s"></div>
  <div class="cl" style="top:14%;width:110px;animation-duration:120s;animation-delay:-80s"></div>
 </div>
-<svg id="castle" viewBox="0 0 400 120" preserveAspectRatio="xMidYMax slice"><path d="M0 120V80h30V60h10V50h10v10h10v20h30V70h10V40h10V28h8v12h10v30h20V90h40V75h12V65h8v10h12v15h30V60h12V45h10v15h10v30h30V80h40v40z"/></svg>
-<svg id="ground" viewBox="0 0 400 100" preserveAspectRatio="none"><path style="fill:var(--g2,#2a8a3c)" d="M0 40Q100 5 200 35T400 25V100H0z"/><path style="fill:var(--g1,#38a84d)" d="M0 60Q120 30 240 55T400 50V100H0z"/></svg>
 <div id="hd">
  <div id="wal"><span id="wcr">💎 0</span><span id="wkey">🔑 0</span></div>
  <div id="coins"></div><div id="rank"></div><div id="chap"></div>
@@ -96,7 +138,7 @@ body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-
  </div>
  <div class="bt"><button id="up"></button></div>
 </div>
-<div class="pn" id="v1"></div><div class="pn" id="v2"></div><div class="pn" id="v3"></div><div class="pn" id="v4"></div><div class="pn" id="v5"></div><div class="pn" id="v6"></div><div class="pn" id="v7"></div>
+<div class="pn" id="v1"></div><div class="pn" id="v2"></div><div class="pn" id="v3"></div><div class="pn" id="v4"></div><div class="pn" id="v5"></div><div class="pn" id="v6"></div><div class="pn" id="v7"></div><div class="pn" id="v8"></div>
 <div id="nav">
  <button class="on" data-i="0"><b>⚔️</b>Гра</button>
  <button data-i="1"><b>🏰</b>Замок</button>
@@ -105,6 +147,18 @@ body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-
  <button data-i="7"><b>☰</b>Ще</button>
 </div>
 <div id="toast"></div>
+<div id="dg">
+ <div id="dgtop"><button class="b" id="dgx">✖</button><b>⚔️ Підземелля</b><span id="dgm"></span></div>
+ <div id="dgmon"><div id="dgmimg"></div><div class="bar"><i id="dgmi"></i></div><div id="dgmhp" class="sm"></div></div>
+ <div id="dgk"><div id="dgkimg"></div><div id="dgkb">
+  <div class="bar"><i id="dgkh"></i></div>
+  <div id="dgkt"></div>
+  <div class="bar" style="height:8px"><i id="dgmg"></i></div>
+  <div id="dgrow"><span id="dgch"></span><span>🔮 магія</span><button class="b" id="dgsp">💥 Спец. удар</button></div>
+ </div></div>
+ <div id="dgbd"></div>
+ <div id="dgres"><div class="box"><h2 id="dgrt"></h2><p id="dgrp"></p><div class="row"><button class="b" id="dgagain">Ще бій</button><button class="b" id="dgclose">Закрити</button></div></div></div>
+</div>
 <div id="intro"><div class="box">
  <h2>⚔️ Королівство Ейлорія</h2>
  <p>Тінь накрила країну, і її монстри йдуть на замок. Усі лицарі полягли, лишився тільки хлопчик-зброєносець із дерев’яним мечем.<br><br>Бий монстрів, збирай монети, відбудовуй замок і виростай до Легенди, щоб перемогти Короля Тіні!</p>
@@ -112,7 +166,7 @@ body{font-family:-apple-system,Segoe UI,sans-serif;color:#fff;user-select:none;-
 </div></div>
 
 <script>
-const VER='15';
+const VER='18';
 const tg=window.Telegram&&Telegram.WebApp;
 const CHANNEL='ClickerHeroGameNews';
 const BOT='ClickerHeroGameBot';
@@ -133,18 +187,40 @@ const def={
  c:0,l:1,w:1,mh:0,e:100,pt:Date.now(),taps:0,kills:0,
  bosses:0,tt:0,td:'',best:0,last:0,done:{},opened:{},
  ref:0,streak:0,lastDay:'',sClaim:'',intro:0,
- bl:[0,0,0,0,0],dq:{d:'',c:{},k:{}}
+ bl:[0,0,0,0,0],dq:{d:'',c:{},k:{}},eq:{aura:'',castle:''}
 };
 let s=Object.assign({},def);
 try{s=Object.assign({},def,JSON.parse(localStorage.getItem('kc3')||localStorage.getItem('kc2')||localStorage.getItem('kc')||'{}'))}catch(e){}
 if(!s.done)s.done={};if(!s.opened)s.opened={};
 if(!s.dq||!s.dq.c||!s.dq.k)s.dq={d:'',c:{},k:{}};
 if(!Array.isArray(s.bl)||s.bl.length!=5)s.bl=[0,0,0,0,0];
+if(!s.eq||typeof s.eq!=='object')s.eq={aura:'',castle:''};
 
 let cloudReady=false,cloudBusy=false,cloudDirty=false,cloudTimer=null;
 let leaderboardBusy=false;
 let W={crystals:0,fragments:0,keys:0},rev=0,base=0;
 function applyWallet(w){if(!w)return;W.crystals=Number(w.crystals)||0;W.fragments=Number(w.fragments)||0;W.keys=Number(w.keys)||0}
+/* магазин, бонуси, предмети */
+let X={items:[],bo:{},cat:[],packs:[]};
+const has=i=>X.items.includes(i);
+const act=k=>(X.bo[k]||0)>Date.now();
+const incMul=()=>(1+(has('perm_income')?.05:0))*(act('income')?2:1);
+const killMul=()=>(1+(has('perm_kills')?.05:0))*(act('kills')?2:1);
+function setShop(sh){
+ if(!sh)return;
+ X.items=sh.items||[];X.cat=sh.catalog||X.cat;X.packs=sh.packs||X.packs;X.bo={};
+ Object.keys(sh.boosts||{}).forEach(k=>{X.bo[k]=Date.now()+sh.boosts[k]*1000});
+}
+/* прийняти гаманець від сервера, не втративши локальні монети, зароблені після останнього збереження */
+function adopt(w){
+ if(!w)return;
+ applyWallet(w);
+ const sv=Number(w.coins)||0;
+ s.c=sv+(s.c-base);base=sv;
+ if(w.grant_rev!==undefined)rev=Number(w.grant_rev)||0;
+ cloudDirty=true;
+ draw();
+}
 
 function save(){
  try{localStorage.setItem('kc3',JSON.stringify(s))}catch(e){}
@@ -220,6 +296,7 @@ async function connectAccount(){
   const cloudState=player.game_state;
   rev=Number(data.rev)||0;
   applyWallet(data.wallet);
+  setShop(data.shop);
   if(hasCloudProgress(cloudState)){
    s=Object.assign({},def,cloudState);
    if(!s.done)s.done={};
@@ -242,9 +319,10 @@ async function connectAccount(){
   s.ref=Number(data.invited)||0;
   if(data.referralRegistered)toast('🎉 Реферальний бонус нараховано!');
   else if(data.bonus>0)toast('🎉 Бонус за друзів: +'+fmt(data.bonus)+' 🪙');
+  if(!s.eq||typeof s.eq!=='object')s.eq={aura:'',castle:''};
   save();
   checkDay();
-  renderKnight();renderMon();draw();
+  renderKnight();renderMon();draw();applyCosmetics();sky();
   if(cur===1)renderCastle();
   if(cur===2)renderTasks();
   if(cur===3)renderTour();
@@ -284,7 +362,7 @@ const BLD=[
  {n:'🐉 Драконяча печера',r:12000,c:80000}
 ];
 const bcost=i=>Math.floor(BLD[i].c*Math.pow(1.55,s.bl[i]));
-const income=()=>BLD.reduce((a,b,i)=>a+b.r*s.bl[i],0);
+const income=()=>BLD.reduce((a,b,i)=>a+b.r*s.bl[i],0)*incMul();
 function tick(){
  const n=Date.now();let dt=(n-s.pt)/1000;if(dt<0)dt=0;
  const inc=income()/3600*Math.min(dt,10800);
@@ -308,9 +386,13 @@ function sky(){
  $('sky').style.background='linear-gradient('+mix(a[1],b[1],t)+','+mix(a[2],b[2],t)+')';
  let n=0;if(h>=20.5||h<=5)n=1;else if(h<7)n=(7-h)/2;else if(h>=18.5)n=(h-18.5)/2;
  $('stars').style.opacity=n*.9;$('clouds').style.opacity=(1-n)*.85;
+ $('nov').style.opacity=(n*.74).toFixed(3);
+ const warm=Math.max(0,1-Math.abs(h-6.4)/1.5,1-Math.abs(h-19)/1.5);
+ $('wov').style.opacity=(warm*.55).toFixed(3);
+ $('bg').style.filter=(s.eq&&s.eq.castle&&has(s.eq.castle))?'sepia(.5) saturate(1.5) brightness(1.05)':'';
  const R=document.documentElement.style;
  R.setProperty('--g1',mix('#38a84d','#0d2a1f',n));R.setProperty('--g2',mix('#2a8a3c','#081a14',n));R.setProperty('--c',mix('#5a4a8a','#0c0a24',n));
- const H=innerHeight*.5;
+ const H=innerHeight*.42;
  const orb=(el,p,on)=>{el.style.opacity=on?1:0;el.style.left=(8+84*p)+'%';el.style.top=(H-Math.sin(Math.PI*p)*H*.62)+'px'};
  orb($('sun'),(h-5.5)/13.5,h>=5.5&&h<=19);
  const hh=h>=19?h-19:h+5;orb($('moon'),hh/11,h>=19||h<=6);
@@ -391,7 +473,7 @@ function draw(){
 }
 function fl(x,y,t){const d=document.createElement('div');d.className='f';d.textContent=t;d.style.left=(x-16)+'px';d.style.top=(y-30)+'px';document.body.appendChild(d);setTimeout(()=>d.remove(),800)}
 function kill(){
- const boss=isBoss(),c=chap(),mx=mhpMax(),rew=Math.ceil(mx*.5);
+ const boss=isBoss(),c=chap(),mx=mhpMax(),rew=Math.ceil(mx*.5*killMul());
  s.c+=rew;s.kills++;dc('kills',1);dc('earned',rew);
  let msg='+'+fmt(rew)+' 🪙';
  if(boss){s.bosses++;dc('boss',1);s.e=emax();msg=s.w%50==0?'👑 Король Тіні переможений! Але Тінь повертається сильнішою…':'⚔️ Бос «'+CH[c].b+'» переможений! Енергія відновлена ⚡';hap('n','success')}
@@ -417,9 +499,10 @@ $('up').onclick=()=>{
 function renderCastle(){
  let h='<div class="cd"><h3>🏰 Твій замок</h3><p>Дохід: <b>'+fmt(income())+' 🪙/год</b></p><p class="sm">Працює, навіть коли тебе немає в грі (до 3 годин).</p></div>';
  BLD.forEach((b,i)=>{const c=bcost(i);h+='<div class="cd"><div class="row"><div><b>'+b.n+' · рів. '+s.bl[i]+'</b><p>+'+fmt(b.r)+' 🪙/год за рівень</p></div><button class="b" data-i="'+i+'"'+(s.c<c?' style="opacity:.5"':'')+'>'+fmt(c)+' 🪙</button></div></div>'});
- h+='<div class="cd"><h3>💎 Магазин</h3><p>Скоро: енергія, прискорення та скіни лицаря за Telegram Stars ⭐</p></div>';$('v1').innerHTML=h;
+ h+='<div class="cd"><div class="row"><div><b>💎 Магазин</b><p>Кристали, бонуси, скрині, вигляд</p></div><button class="b" data-shop="1">Відкрити</button></div></div>';$('v1').innerHTML=h;
 }
 $('v1').onclick=e=>{
+ if(e.target.closest('button[data-shop]')){show(8);return}
  const b=e.target.closest('button[data-i]');if(!b)return;
  const i=+b.dataset.i,c=bcost(i);if(s.c<c){toast('Не вистачає монет 🪙');return}
  s.c-=c;s.bl[i]++;dc('cu',1);draw();renderCastle();hap('n','success');
@@ -530,14 +613,437 @@ $('v4').onclick=e=>{
  else{const u='https://t.me/share/url?url='+encodeURIComponent(link())+'&text='+encodeURIComponent('Грай у Knight Clicker і прокачуй лицаря! ⚔️');try{tg.openTelegramLink(u)}catch(_){window.open(u)}}
 };
 
-/* МІНІІГРИ, СКРИНІ, МЕНЮ «ЩЕ» */
-function renderMini(){
- $('v5').innerHTML='<div class="cd"><h3>⚔️ Підземелля</h3><p>Скоро: бій із монстром у стилі «три в ряд». Не витрачає енергію, нагороди раз на добу.</p></div>';
+/* ===== MATCH-3 ДВИГУН ===== */
+const MN=8,MT=5,MK=['dmg','shield','heal','charge','magic'];
+const M3={
+ dmg:[50,90,150],shield:[20,35,55],heal:[15,28,45],charge:[1,2,3],magic:[25,45,75],
+ cell:{dmg:15,shield:6,heal:5,charge:.34,magic:8},
+ monsterHp:7000,monsterDmg:50,monsterEvery:3,knightHp:100,
+ specCost:5,specDmg:400,magicNeed:100,magicDmg:250
+};
+function rndCell(r){return{t:Math.floor(r()*MT),sp:0}}
+function makesRun(b,i,t){
+ const x=i%MN,y=(i/MN)|0;
+ if(x>=2&&b[i-1].t===t&&b[i-2].t===t)return true;
+ if(y>=2&&b[i-MN].t===t&&b[i-2*MN].t===t)return true;
+ return false;
 }
-function renderChests(){
- $('v6').innerHTML='<div class="cd"><h3>📦 Щоденні скрині</h3><p>Скоро: три скрині на день, у одній із них скарб.</p><p>Твої ключі: <b>🔑 '+W.keys+'</b></p><p class="sm">Ключі дають додаткові спроби. Їх можна отримати за перемогу над босами.</p></div>';
+function findRuns(b){
+ const runs=[];
+ for(let y=0;y<MN;y++){let x=0;while(x<MN){const c=b[y*MN+x];let e=x+1;
+  if(c)while(e<MN&&b[y*MN+e]&&b[y*MN+e].t===c.t)e++;
+  if(c&&e-x>=3){const cells=[];for(let k=x;k<e;k++)cells.push(y*MN+k);runs.push({t:c.t,len:e-x,cells,dir:'h'})}
+  x=e}}
+ for(let x=0;x<MN;x++){let y=0;while(y<MN){const c=b[y*MN+x];let e=y+1;
+  if(c)while(e<MN&&b[e*MN+x]&&b[e*MN+x].t===c.t)e++;
+  if(c&&e-y>=3){const cells=[];for(let k=y;k<e;k++)cells.push(k*MN+x);runs.push({t:c.t,len:e-y,cells,dir:'v'})}
+  y=e}}
+ return runs;
 }
-const MORE=[[2,'📋','Завдання','Щоденні та постійні завдання'],[3,'🏆','Турнір','Рейтинг гравців за день'],[4,'👥','Друзі','Запроси друзів і отримай бонус']];
+function swapC(b,i,j){const t=b[i];b[i]=b[j];b[j]=t}
+function hasMove(b){
+ if(b.some(c=>c&&c.sp))return true;
+ for(let y=0;y<MN;y++)for(let x=0;x<MN;x++){
+  const i=y*MN+x;
+  if(x<MN-1){swapC(b,i,i+1);const ok=findRuns(b).length>0;swapC(b,i,i+1);if(ok)return true}
+  if(y<MN-1){swapC(b,i,i+MN);const ok=findRuns(b).length>0;swapC(b,i,i+MN);if(ok)return true}
+ }
+ return false;
+}
+function newBoard(r){
+ for(let n=0;n<500;n++){
+  const b=[];
+  for(let i=0;i<MN*MN;i++){let c;do{c=rndCell(r)}while(makesRun(b,i,c.t));b.push(c)}
+  if(hasMove(b))return b;
+ }
+ throw new Error('board');
+}
+function shuffleBoard(b,r){
+ for(let n=0;n<200;n++){
+  const a=b.slice();
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));const t=a[i];a[i]=a[j];a[j]=t}
+  if(findRuns(a).length===0&&hasMove(a)){for(let i=0;i<a.length;i++)b[i]=a[i];return}
+ }
+ const nb=newBoard(r);for(let i=0;i<nb.length;i++)b[i]=nb[i];
+}
+function gravity(b,r){
+ for(let x=0;x<MN;x++){
+  let w=MN-1;
+  for(let y=MN-1;y>=0;y--){const c=b[y*MN+x];if(c){if(w!==y){b[w*MN+x]=c;b[y*MN+x]=null}w--}}
+  for(let y=w;y>=0;y--)b[y*MN+x]=rndCell(r);
+ }
+}
+const snap=b=>b.map(c=>c?{t:c.t,sp:c.sp}:null);
+/* один крок: знайти комбінації, активувати спецкристали, повернути ефекти */
+function step(b,swp,forced,bombs){
+ const runs=findRuns(b);
+ const clear=new Set(forced||[]);
+ runs.forEach(r=>r.cells.forEach(i=>clear.add(i)));
+ if(!clear.size)return null;
+ const created=[];
+ for(const r of runs){
+  if(r.len>=4){
+   let pos=r.cells.find(i=>swp&&swp.includes(i));
+   if(pos===undefined)pos=r.cells[r.cells.length>>1];
+   created.push({i:pos,t:r.t,sp:r.len>=5?3:(r.dir==='h'?1:2)});
+  }
+ }
+ const done=new Set(),q=[...clear];
+ while(q.length){
+  const i=q.pop();if(done.has(i))continue;done.add(i);
+  const c=b[i];if(!c||!c.sp)continue;
+  const x=i%MN,y=(i/MN)|0,add=j=>{if(!clear.has(j)){clear.add(j);q.push(j)}};
+  if(c.sp===1)for(let k=0;k<MN;k++)add(y*MN+k);
+  else if(c.sp===2)for(let k=0;k<MN;k++)add(k*MN+x);
+  else{const col=bombs&&bombs.has(i)?bombs.get(i):c.t;for(let j=0;j<b.length;j++)if(b[j]&&b[j].t===col)add(j)}
+ }
+ created.forEach(c=>clear.delete(c.i));
+ const cnt=[0,0,0,0,0],runCells=[new Set(),new Set(),new Set(),new Set(),new Set()];
+ clear.forEach(i=>{if(b[i])cnt[b[i].t]++});
+ runs.forEach(r=>r.cells.forEach(i=>{if(clear.has(i))runCells[r.t].add(i)}));
+ const fx={dmg:0,shield:0,heal:0,charge:0,magic:0};
+ runs.forEach(r=>{const k=MK[r.t];fx[k]+=M3[k][Math.min(r.len,5)-3]});
+ for(let t=0;t<MT;t++){const extra=Math.max(0,cnt[t]-runCells[t].size);fx[MK[t]]+=extra*M3.cell[MK[t]]}
+ const cl=[...clear];
+ cl.forEach(i=>{b[i]=null});
+ created.forEach(c=>{b[c.i]={t:c.t,sp:c.sp}});
+ return{fx,cleared:cl,created};
+}
+/* хід гравця: повертає null якщо хід неможливий, інакше масив кроків */
+function playMove(b,i,j,r){
+ const dx=Math.abs(i%MN-j%MN),dy=Math.abs(((i/MN)|0)-((j/MN)|0));
+ if(dx+dy!==1||!b[i]||!b[j])return null;
+ swapC(b,i,j);
+ const A=b[i],B=b[j];
+ const forced=new Set(),bombs=new Map();
+ if(A.sp||B.sp){
+  if(A.sp===3&&B.sp===3){for(let k=0;k<b.length;k++)forced.add(k)}
+  else if(A.sp===3){forced.add(i);bombs.set(i,B.t)}
+  else if(B.sp===3){forced.add(j);bombs.set(j,A.t)}
+  else{if(A.sp)forced.add(i);if(B.sp)forced.add(j)}
+ }
+ if(findRuns(b).length===0&&forced.size===0){swapC(b,i,j);return null}
+ const steps=[];let first=true,chain=0;
+ while(true){
+  const s=step(b,first?[i,j]:null,first?forced:null,first?bombs:null);
+  first=false;
+  if(!s)break;
+  chain++;
+  s.chain=chain;s.pre=snap(b);
+  gravity(b,r);
+  s.post=snap(b);
+  steps.push(s);
+  if(chain>30)break;
+ }
+ let shuffled=false;
+ if(!hasMove(b)){shuffleBoard(b,r);shuffled=true}
+ steps.shuffled=shuffled;steps.final=snap(b);
+ return steps;
+}
+const chainMul=n=>Math.min(2.5,1+0.25*(n-1));
+function newGame(){return{mHP:M3.monsterHp,mMax:M3.monsterHp,kHP:M3.knightHp,kMax:M3.knightHp,shield:0,charge:0,magic:0,moves:0,casts:0}}
+function applyFx(G,fx,chain){
+ const m=chainMul(chain),R=v=>Math.round(v*m);
+ const out={dmg:R(fx.dmg),shield:R(fx.shield),heal:R(fx.heal),charge:Math.round(fx.charge*m*10)/10,magic:R(fx.magic),cast:0};
+ G.mHP-=out.dmg;
+ G.shield+=out.shield;
+ const h=Math.min(G.kMax-G.kHP,out.heal);G.kHP+=h;out.heal=h;
+ G.charge=Math.min(10,G.charge+out.charge);
+ G.magic+=out.magic;
+ while(G.magic>=M3.magicNeed){G.magic-=M3.magicNeed;G.mHP-=M3.magicDmg;out.cast++;G.casts++}
+ if(G.mHP<0)G.mHP=0;
+ return out;
+}
+function monsterTurn(G){
+ let d=M3.monsterDmg;const ab=Math.min(G.shield,d);G.shield-=ab;d-=ab;
+ G.kHP=Math.max(0,G.kHP-d);return{hit:M3.monsterDmg,absorbed:ab,hp:d};
+}
+function useSpecial(G){if(G.charge<M3.specCost)return false;G.charge-=M3.specCost;G.mHP=Math.max(0,G.mHP-M3.specDmg);return true}
+
+/* ===== ПІДЗЕМЕЛЛЯ: інтерфейс і бій ===== */
+const GL=['⚔️','🛡️','💚','⚡','🔮'];
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const DG={run:null,b:null,G:null,busy:false,over:false,t0:0,avail:true,mon:0};
+let selI=-1,pd=null,DG_ST=null;
+const dgIdx=()=>Math.floor(Date.now()/864e5)%5;
+function dgHud(){
+ const G=DG.G;if(!G)return;
+ $('dgmi').style.width=Math.max(0,G.mHP/G.mMax*100)+'%';
+ $('dgmhp').textContent=fmt(Math.max(0,G.mHP))+' / '+fmt(G.mMax);
+ $('dgkh').style.width=Math.max(0,G.kHP/G.kMax*100)+'%';
+ $('dgkt').textContent='❤ '+G.kHP+' / '+G.kMax+'   🛡 '+G.shield;
+ $('dgch').textContent='⚡ '+Math.floor(G.charge)+' / '+M3.specCost;
+ $('dgmg').style.width=Math.min(100,G.magic/M3.magicNeed*100)+'%';
+ $('dgsp').style.display=G.charge>=M3.specCost?'inline-block':'none';
+ $('dgm').textContent='👹 атака через: '+(M3.monsterEvery-G.moves%M3.monsterEvery);
+}
+function dgDraw(bd,pops){
+ bd=bd||DG.b;let h='';
+ for(let i=0;i<MN*MN;i++){
+  const c=bd[i];
+  if(!c){h+='<div class="gm" data-i="'+i+'"></div>';continue}
+  h+='<div class="gm g'+c.t+(c.sp?' sp':'')+(selI===i?' s':'')+(pops&&pops.has(i)?' pop':'')+'" data-i="'+i+'" data-sp="'+c.sp+'">'+GL[c.t]+'</div>';
+ }
+ $('dgbd').innerHTML=h;
+}
+function dgFloat(txt,color,el){
+ const r=el.getBoundingClientRect(),d=document.createElement('div');
+ d.className='f';d.textContent=txt;d.style.color=color;d.style.zIndex=20;
+ d.style.left=(r.left+r.width/2-20)+'px';d.style.top=(r.top+14)+'px';
+ document.body.appendChild(d);setTimeout(()=>d.remove(),800);
+}
+async function dgStart(){
+ let d;
+ try{d=await api('dungeon_start')}catch(e){toast('⚠️ '+e.message);return}
+ if(!d.ok){toast('⚠️ Не вдалося почати бій');return}
+ DG.run=d.run_id;DG.avail=d.reward_available;
+ DG.b=newBoard(Math.random);DG.G=newGame();DG.busy=false;DG.over=false;DG.t0=Date.now();selI=-1;
+ DG.mon=dgIdx();
+ $('dgmimg').innerHTML=spr(BOSSES[DG.mon],'<div class="em">'+CH[DG.mon].bm+'</div>');
+ $('dgkimg').innerHTML=spr(HEROES[tier()],'<span style="font-size:7vh">🛡️</span>');
+ $('dgres').classList.remove('on');
+ $('dg').classList.add('on');
+ dgHud();dgDraw();
+ if(!DG.avail)toast('Щоденну нагороду вже отримано, цей бій без нагороди');
+}
+async function dgSwap(a,b){
+ if(DG.busy||DG.over)return;
+ const dx=Math.abs(a%MN-b%MN),dy=Math.abs(((a/MN)|0)-((b/MN)|0));
+ if(dx+dy!==1){selI=b;dgDraw();return}
+ const before=snap(DG.b);
+ const steps=playMove(DG.b,a,b,Math.random);
+ if(!steps){selI=-1;dgDraw();toast('Тут немає комбінації');hap('n','error');return}
+ DG.busy=true;selI=-1;
+ const G=DG.G;
+ let prev=before.slice();const t0=prev[a];prev[a]=prev[b];prev[b]=t0;
+ dgDraw(prev);await wait(120);
+ for(const s of steps){
+  dgDraw(prev,new Set(s.cleared));await wait(220);
+  dgDraw(s.pre);await wait(60);
+  const out=applyFx(G,s.fx,s.chain);
+  if(out.dmg>0)dgFloat('-'+out.dmg,'#ff6b6b',$('dgmimg'));
+  if(out.shield>0)dgFloat('+'+out.shield+'🛡','#7db8ff',$('dgkt'));
+  if(out.heal>0)dgFloat('+'+out.heal+'❤','#7dffa0',$('dgkt'));
+  if(out.cast>0){dgFloat('🔮 -'+(out.cast*M3.magicDmg),'#d8a6ff',$('dgmimg'));hap('n','success')}
+  if(s.chain>1)toast('🔥 Ланцюг ×'+s.chain);
+  dgHud();
+  dgDraw(s.post);await wait(160);
+  prev=s.post;
+  if(G.mHP<=0)break;
+ }
+ if(steps.shuffled&&G.mHP>0){toast('🔀 Кристали перемішано');dgDraw()}
+ if(G.mHP<=0){dgDraw();await dgFinish('won');return}
+ G.moves++;
+ if(G.moves%M3.monsterEvery===0){
+  const m=monsterTurn(G);
+  dgFloat('-'+m.hit,'#ff4d4d',$('dgkt'));hap('n','error');
+  if(m.absorbed>0)toast('🛡 Щит поглинув '+m.absorbed);
+  dgHud();
+  if(G.kHP<=0){await dgFinish('lost');return}
+ }
+ dgHud();dgDraw();DG.busy=false;
+}
+async function dgFinish(res){
+ DG.over=true;DG.busy=true;
+ let title,msg;
+ try{
+  const d=await api('dungeon_finish',{run_id:DG.run,result:res});
+  if(d.wallet)adopt(d.wallet);
+  if(res==='won'){
+   title='🏆 Перемога!';
+   if(d.ok&&d.reward)msg='Нагорода: +'+fmt(d.coins)+' 🪙, +'+d.fragments+' уламки кристала'+(d.keys?', +'+d.keys+' 🔑':'')+'. Наступна нагорода завтра.';
+   else if(d.ok)msg='Щоденну нагороду вже отримано, цей бій був без нагороди.';
+   else msg='Бій не зараховано сервером (занадто швидкий або застарілий).';
+   hap('n','success');
+  }else{title='💀 Поразка';msg='Лицар упав. Спробуй ще раз, нагорода чекає на тебе!'}
+ }catch(e){title='⚠️ Помилка';msg=e.message}
+ $('dgrt').textContent=title;$('dgrp').textContent=msg;
+ $('dgagain').textContent=res==='won'?'Ще бій':'Спробувати ще';
+ $('dgres').classList.add('on');
+ DG_ST=null;
+}
+$('dgbd').addEventListener('pointerdown',e=>{
+ const c=e.target.closest('.gm');if(!c||DG.busy||DG.over)return;
+ pd={i:+c.dataset.i,x:e.clientX,y:e.clientY};
+});
+$('dgbd').addEventListener('pointercancel',()=>{pd=null});
+$('dgbd').addEventListener('pointerup',e=>{
+ if(!pd)return;
+ const i=pd.i,dx=e.clientX-pd.x,dy=e.clientY-pd.y;pd=null;
+ if(DG.busy||DG.over)return;
+ if(Math.abs(dx)>18||Math.abs(dy)>18){
+  let j;
+  if(Math.abs(dx)>Math.abs(dy)){
+   if((dx>0&&i%MN===MN-1)||(dx<0&&i%MN===0))return;
+   j=i+(dx>0?1:-1);
+  }else{
+   j=i+(dy>0?MN:-MN);if(j<0||j>=MN*MN)return;
+  }
+  selI=-1;dgSwap(i,j);return;
+ }
+ if(selI<0){selI=i;dgDraw()}
+ else if(selI===i){selI=-1;dgDraw()}
+ else{const a=selI;selI=-1;dgSwap(a,i)}
+});
+$('dgsp').onclick=async()=>{
+ if(DG.busy||DG.over||!useSpecial(DG.G))return;
+ dgFloat('-'+M3.specDmg,'#ffd84d',$('dgmimg'));hap('n','success');dgHud();
+ if(DG.G.mHP<=0){DG.busy=true;await dgFinish('won')}
+};
+$('dgx').onclick=async()=>{
+ if(!DG.over){
+  const ok=await new Promise(r=>{try{tg.showConfirm('Вийти з бою? Прогрес бою буде втрачено.',r)}catch(e){r(confirm('Вийти з бою?'))}});
+  if(!ok)return;
+ }
+ $('dg').classList.remove('on');DG.over=true;if(cur===5)renderMini();
+};
+$('dgclose').onclick=()=>{$('dg').classList.remove('on');if(cur===5)renderMini()};
+$('dgagain').onclick=()=>{dgStart()};
+
+async function renderMini(){
+ const box=$('v5');
+ if(!cloudReady){box.innerHTML='<div class="cd"><p>Очікування підключення…</p></div>';return}
+ let st='';
+ try{
+  const d=await api('dungeon_status');
+  st=d.reward_available?'🎁 Нагорода за сьогодні <b>доступна</b>':'✅ Нагороду за сьогодні вже отримано (бій без нагороди)';
+ }catch(e){st='⚠️ '+e.message}
+ const idx=dgIdx();
+ box.innerHTML='<div class="cd"><h3>⚔️ Підземелля</h3><p>Бій із монстром у стилі «три в ряд». Міняй сусідні кристали місцями: збери 3 або більше однакових у ряд.</p>'+
+  '<p>⚔️ шкода · 🛡️ щит · 💚 лікування · ⚡ заряд спец. удару · 🔮 магія</p>'+
+  '<p class="sm">4 в ряд створює кристал, що знищує ряд або стовпець. 5 в ряд створює зірку, що знищує всі кристали одного кольору.</p>'+
+  '<p>'+st+'</p><p class="sm">Нагорода раз на добу: монети, 2 уламки кристала, 10% шанс ключа. Не витрачає енергію.</p>'+
+  '<div style="margin-top:8px"><button class="b" id="dgstart">⚔️ Почати бій</button></div></div>';
+ $('dgstart').onclick=dgStart;
+}
+
+/* ===== ЩОДЕННІ СКРИНІ ===== */
+let CH_STATE=null,chBusy=false;
+async function renderChests(){
+ const box=$('v6');
+ if(!cloudReady){box.innerHTML='<div class="cd"><p>Очікування підключення…</p></div>';return}
+ if(!CH_STATE)box.innerHTML='<div class="cd"><p>Завантаження скринь…</p></div>';
+ try{
+  const d=await api('chests');
+  if(!d.ok)throw new Error('Не вдалося завантажити скрині');
+  CH_STATE=d;adopt(d.wallet);
+ }catch(e){box.innerHTML='<div class="cd"><p>⚠️ '+e.message+'</p></div>';return}
+ drawChests();
+}
+function drawChests(){
+ const d=CH_STATE;if(!d)return;
+ const op=d.opened||[],last=op[op.length-1];
+ let h='<div class="cd"><h3>📦 Щоденні скрині</h3><p>У одній із трьох скринь лежить скарб. Перша спроба безкоштовна, кожна наступна коштує <b>1 🔑</b>.</p><p>Твої ключі: <b>🔑 '+W.keys+'</b></p><p class="sm">Нові скрині щодня за київським часом. Ключі дають за перемогу над босами.</p></div><div class="cd"><div class="chrow">';
+ for(let i=1;i<=3;i++){
+  const o=op.includes(i);
+  const face=o?((d.found&&i===last)?'💰':'💨'):'📦';
+  const lab=o?(d.found&&i===last?'Скарб!':'Порожньо'):(op.length?'1 🔑':'Безкоштовно');
+  h+='<button class="chb" data-s="'+i+'"'+((o||d.found)?' disabled':'')+'>'+face+'<small>'+lab+'</small></button>';
+ }
+ h+='</div></div>';
+ if(d.found)h+='<div class="cd"><h3>🎉 Скарб знайдено!</h3><p>Нагорода: <b>+'+fmt(d.reward||0)+' 🪙</b>. Повертайся завтра за новими скринями.</p></div>';
+ else if(op.length)h+='<div class="cd"><p>Порожньо. Спробуй ще раз за 🔑 1'+(W.keys<1?' (у тебе немає ключів)':'')+'.</p></div>';
+ $('v6').innerHTML=h;
+}
+$('v6').onclick=async e=>{
+ const b=e.target.closest('button[data-s]');if(!b||chBusy)return;
+ chBusy=true;
+ try{
+  const d=await api('chest_open',{slot:+b.dataset.s});
+  if(d.wallet)adopt(d.wallet);
+  if(!d.ok){toast(d.error==='no_keys'?'🔑 Немає ключів':d.error==='done'?'Скарб уже знайдено':'Не вдалося відкрити');if(d.error==='done'||d.error==='already_opened')CH_STATE=null}
+  else{
+   CH_STATE.opened=d.opened;CH_STATE.found=d.found;CH_STATE.reward=d.reward;
+   if(d.hit){toast('💰 Скарб! +'+fmt(d.reward)+' 🪙');hap('n','success')}else{toast('💨 Порожньо');hap('n','error')}
+  }
+ }catch(err){toast('⚠️ '+err.message)}
+ chBusy=false;
+ if(CH_STATE)drawChests();else renderChests();
+};
+
+/* ===== МАГАЗИН ===== */
+let shBusy=false;
+const isEq=id=>s.eq&&(s.eq.aura===id||s.eq.castle===id);
+function applyCosmetics(){
+ const a=s.eq&&s.eq.aura&&has(s.eq.aura)?s.eq.aura:'';
+ const col=a==='aura_gold'?'#ffd84d':a==='aura_violet'?'#b36bff':'';
+ $('kn').style.filter='drop-shadow(0 12px 12px #0009)'+(col?' drop-shadow(0 0 16px '+col+') drop-shadow(0 0 6px '+col+')':'');
+}
+function toggleEq(id){
+ if(!has(id))return;
+ if(!s.eq)s.eq={aura:'',castle:''};
+ const slot=id.indexOf('aura')===0?'aura':'castle';
+ s.eq[slot]=s.eq[slot]===id?'':id;
+ save();applyCosmetics();sky();drawShop();
+}
+async function renderShop(){
+ const box=$('v8');
+ if(!cloudReady){box.innerHTML='<div class="cd"><p>Очікування підключення…</p></div>';return}
+ if(!X.cat.length){
+  try{const d=await api('shop_state');setShop(d.shop)}catch(e){box.innerHTML='<div class="cd"><p>⚠️ '+e.message+'</p></div>';return}
+ }
+ drawShop();
+}
+function drawShop(){
+ let h='<div class="cd"><h3>💎 Кристали: '+W.crystals+'</h3><p class="sm">Уламки: '+W.fragments+' / 10 (10 уламків = 1 кристал). Кристали рідкісні, їх можна отримати за підземелля, скрині та купити за Telegram Stars.</p></div>';
+ const groups=[['chest','🎁 Скрині'],['boost','⏱️ Тимчасові бонуси'],['perm','♾️ Постійні бонуси'],['cosmetic','👑 Унікальний вигляд']];
+ groups.forEach(g=>{
+  const items=X.cat.filter(c=>c.type===g[0]);if(!items.length)return;
+  h+='<h3 class="t">'+g[1]+'</h3>';
+  items.forEach(it=>{
+   const owned=has(it.id);let extra='',btn;
+   if(it.type==='boost'&&act(it.kind))extra=' · ще '+Math.ceil((X.bo[it.kind]-Date.now())/60000)+' хв';
+   if(owned&&it.type==='cosmetic')btn='<button class="b" data-eq="'+it.id+'">'+(isEq(it.id)?'Зняти':'Одягнути')+'</button>';
+   else if(owned)btn='<button class="b" disabled>✅ Куплено</button>';
+   else btn='<button class="b" data-buy="'+it.id+'"'+(W.crystals<it.price?' style="opacity:.5"':'')+'>'+it.price+' 💎</button>';
+   h+='<div class="cd"><div class="row"><div><b>'+it.t+'</b><p>'+it.d+extra+'</p></div>'+btn+'</div></div>';
+  });
+ });
+ h+='<h3 class="t">⭐ Купити кристали</h3>';
+ X.packs.forEach(p=>{h+='<div class="cd"><div class="row"><b>💎 '+p.crystals+'</b><button class="b" data-pack="'+p.id+'">'+p.stars+' ⭐</button></div></div>'});
+ h+='<p class="sm">Оплата через Telegram Stars. Кристали зараховуються після підтвердження платежу сервером.</p>';
+ $('v8').innerHTML=h;
+}
+async function pollWallet(n){
+ try{
+  const before=W.crystals,d=await api('wallet');
+  adopt(d.wallet);setShop(d.shop);
+  if(W.crystals>before){toast('💎 Кристали зараховано!');hap('n','success');if(cur===8)drawShop();return}
+ }catch(e){}
+ if(n<10)setTimeout(()=>pollWallet(n+1),2500);
+}
+$('v8').onclick=async e=>{
+ const bb=e.target.closest('button[data-buy]'),be=e.target.closest('button[data-eq]'),bp=e.target.closest('button[data-pack]');
+ if(be){toggleEq(be.dataset.eq);return}
+ if(bb){
+  if(shBusy)return;shBusy=true;
+  try{
+   const d=await api('buy',{item:bb.dataset.buy});
+   if(d.wallet)adopt(d.wallet);
+   if(d.shop)setShop(d.shop);
+   if(!d.ok)toast(d.error==='insufficient'?'Не вистачає кристалів 💎':d.error==='owned'?'Уже куплено':'Не вдалося купити');
+   else{
+    toast(d.item==='chest_special'?('🎁 +'+fmt(d.coins)+' 🪙'+(d.keys?' +'+d.keys+' 🔑':'')+(d.fragments?' +'+d.fragments+' уламки':'')):'✅ Куплено');
+    hap('n','success');applyCosmetics();sky();
+   }
+  }catch(err){toast('⚠️ '+err.message)}
+  shBusy=false;drawShop();return;
+ }
+ if(bp){
+  if(shBusy)return;shBusy=true;
+  try{
+   const d=await api('stars_invoice',{pack:bp.dataset.pack});
+   tg.openInvoice(d.link,st=>{
+    if(st==='paid'){toast('Платіж отримано, зараховуємо…');pollWallet(0)}
+    else if(st==='failed')toast('Оплата не вдалась');
+   });
+  }catch(err){toast('⚠️ '+err.message)}
+  shBusy=false;
+ }
+};
+
+/* ===== МЕНЮ «ЩЕ» ===== */
+const MORE=[[8,'💎','Магазин','Кристали, бонуси, скрині, вигляд'],[2,'📋','Завдання','Щоденні та постійні завдання'],[3,'🏆','Турнір','Рейтинг гравців за день'],[4,'👥','Друзі','Запроси друзів і отримай бонус']];
 function renderMore(){
  let h='';
  MORE.forEach(m=>{h+='<div class="cd"><div class="row"><div><b>'+m[1]+' '+m[2]+'</b><p>'+m[3]+'</p></div><button class="b" data-go="'+m[0]+'">Відкрити</button></div></div>'});
@@ -547,21 +1053,22 @@ $('v7').onclick=e=>{const b=e.target.closest('button[data-go]');if(b)show(+b.dat
 
 /* ВКЛАДКИ */
 let cur=0;
-const IN_MORE=[2,3,4];
+const IN_MORE=[2,3,4,8];
 function show(i){
  cur=i;$('v0').classList.toggle('on',i==0);
- [1,2,3,4,5,6,7].forEach(k=>$('v'+k).classList.toggle('on',i==k));
+ [1,2,3,4,5,6,7,8].forEach(k=>$('v'+k).classList.toggle('on',i==k));
  const nb=IN_MORE.includes(i)?7:i;
  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.i==nb));
  if(i==1)renderCastle();if(i==2)renderTasks();if(i==3)renderTour();if(i==4)renderFr();
- if(i==5)renderMini();if(i==6)renderChests();if(i==7)renderMore();hap('i');
+ if(i==5)renderMini();if(i==6)renderChests();if(i==7)renderMore();if(i==8)renderShop();hap('i');
 }
+
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>show(+b.dataset.i));
 
 /* СТАРТ */
 try{tg.ready();tg.expand();tg.disableVerticalSwipes()}catch(e){}
 if(s.mh<=0||s.mh>mhpMax())s.mh=mhpMax();
-checkDay();const r0=tick();renderKnight();renderMon();draw();sky();
+checkDay();const r0=tick();renderKnight();renderMon();draw();applyCosmetics();sky();
 if(r0.away&&r0.inc>=1)toast('Поки тебе не було, замок заробив +'+fmt(r0.inc)+' 🪙');
 if(!s.intro)$('intro').classList.add('on');
 $('go').onclick=()=>{s.intro=1;save();$('intro').classList.remove('on')};
@@ -576,6 +1083,9 @@ function loadImg(n,k){
  i.src=n+EXT[k]+'?v='+VER;
 }
 FILES.forEach(n=>loadImg(n,0));
+const BGV=['bg.jpg','bg.jpg.jpg','bg.JPG','bg.jpg.JPG','bg.jpeg','bg.png'];
+(function tryBg(k){if(k>=BGV.length)return;const i=new Image();i.onload=()=>{$('bg').style.backgroundImage='url('+BGV[k]+'?v='+VER+')'};i.onerror=()=>tryBg(k+1);i.src=BGV[k]+'?v='+VER})(0);
+$('wal').onclick=()=>show(8);
 
 connectAccount();
 
